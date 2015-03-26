@@ -1,0 +1,15 @@
+{
+	"id": "{3F5A9972-5E02-4A4C-962C-C5C691A76336}",
+	"name": "OneWireLan",
+	"type": 3,
+	"vendor": "Charykun",
+	"aliases": 
+	[
+		"OneWire Lan",
+        "1-Wire Lan"
+	],
+	"parentRequirements": [],
+	"childRequirements": [],
+	"implemented": [],
+	"prefix": "OneWireLan"
+}
