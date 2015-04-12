@@ -1,0 +1,14 @@
+{
+	"id": "{5ACBDF25-E4C1-4535-8599-E37539402954}",
+	"name": "SSHRemote",
+	"type": 3,
+	"vendor": "Charykun",
+	"aliases": 
+	[
+		"SSH Remote"
+	],
+	"parentRequirements": [],
+	"childRequirements": [],
+	"implemented": [],
+	"prefix": "SSHRemote"
+}
