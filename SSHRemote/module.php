@@ -152,7 +152,7 @@
             //search for already available events with proper ident
             $eid = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
             
-            //properly update scriptID
+            //properly update eventID
             if($eid === false)
             {
                 $eid = 0;
@@ -162,19 +162,19 @@
             if($eid == 0)
             {
                 $eid = IPS_CreateEvent(1);
-				
-		//configure it
-		IPS_SetParent($eid, $this->InstanceID);
-		IPS_SetIdent($eid, $Ident);
-		IPS_SetName($eid, $Name);
-		IPS_SetPosition($eid, $Position);
-		//IPS_SetReadOnly($vid, true);
-				
-                IPS_SetEventCyclic($eid, $DateType, $DateInterval, $DateDays, $DateDaysInterval, $TimeTyp, $TimeInterval);      
-                IPS_SetEventScript($eid, $Content);
-                IPS_SetEventActive($eid, true);
             }
-			
+            
+            //configure it
+            IPS_SetParent($eid, $this->InstanceID);
+            IPS_SetIdent($eid, $Ident);
+            IPS_SetName($eid, $Name);
+            IPS_SetPosition($eid, $Position);
+            //IPS_SetReadOnly($vid, true);
+            	
+            IPS_SetEventCyclic($eid, $DateType, $DateInterval, $DateDays, $DateDaysInterval, $TimeTyp, $TimeInterval);      
+            IPS_SetEventScript($eid, $Content);
+            IPS_SetEventActive($eid, true);
+            			
             return $eid;				
         }
     }
