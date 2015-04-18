@@ -23,7 +23,7 @@
             $this->RegisterScript("Script_Test", "Test", "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\necho (new SSHRemote(".$this->InstanceID."))->exec(\"pwd\");");
             $this->RegisterScript("Script_Wakeup", "*** Wakeup ***", "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\n(new SSHRemote(".$this->InstanceID."))->WakeOnLAN();");
 
-            $this->RegisterVariableBoolean("IsOnline", "Online");
+            $this->RegisterVariableBoolean("IsOnline", "Online", "Switch");
             
             $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 60, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\n(new SSHRemote(".$this->InstanceID."))->Update();");
             }
@@ -169,7 +169,8 @@
             IPS_SetIdent($eid, $Ident);
             IPS_SetName($eid, $Name);
             IPS_SetPosition($eid, $Position);
-            //IPS_SetReadOnly($vid, true);
+            IPS_SetHidden($eid, TRUE);
+            //IPS_SetReadOnly($eid, true);
             	
             IPS_SetEventCyclic($eid, $DateType, $DateInterval, $DateDays, $DateDaysInterval, $TimeTyp, $TimeInterval);      
             IPS_SetEventScript($eid, $Content);
