@@ -25,7 +25,7 @@
 
             $this->RegisterVariableBoolean("IsOnline", "Online");
             
-            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 60, "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\n(new SSHRemote(".$this->InstanceID."))->Update();");
+            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 60, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\n(new SSHRemote(".$this->InstanceID."))->Update();");
             }
         
         /**
