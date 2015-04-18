@@ -40,8 +40,8 @@
         
         public function Login($Output = 0)
         {
-            include_once(__DIR__ . "SSH2.php");
-            include_once(__DIR__ . "Crypt/RSA.php");            
+            include_once(__DIR__ . "/SSH2.php");
+            include_once(__DIR__ . "/Crypt/RSA.php");            
 
             $User = $this->ReadPropertyString("Username");
             $Key =  $this->ReadPropertyString("Password");
