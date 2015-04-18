@@ -135,7 +135,7 @@
 
         public function Update()
         {
-            if ( $this->Login )
+            if ( $this->Login() )
             {
                 SetValue($this->GetIDForIdent("IsOnline"), TRUE);
             }
