@@ -20,7 +20,7 @@
             //Never delete this line!
             parent::ApplyChanges();
             
-            $this->RegisterScript("Script_Test", "Test", "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\necho (new SSHRemote(".$this->InstanceID."))->exec(\"pwd\");");
+            //$this->RegisterScript("Script_Test", "Test", "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\necho (new SSHRemote(".$this->InstanceID."))->exec(\"pwd\");");
             $this->RegisterScript("Script_Wakeup", "*** Wakeup ***", "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\n(new SSHRemote(".$this->InstanceID."))->WakeOnLAN();");
 
             $this->RegisterVariableBoolean("IsOnline", "Online", "Switch");
@@ -135,7 +135,7 @@
 
         public function Update()
         {
-            if ( $this->Login() )
+            if ( @$this->Login() )
             {
                 SetValue($this->GetIDForIdent("IsOnline"), TRUE);
             }
