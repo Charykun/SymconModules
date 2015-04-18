@@ -8,11 +8,11 @@
             
             //These lines are parsed on Symcon Startup or Instance creation
             //You can not use variables here. Just static values.
-            $this->RegisterPropertyString('IPAddress', '192.168.1.1');
-            $this->RegisterPropertyInteger('Port', 22);
-            $this->RegisterPropertyString('MAC', '00:00:00:00:00:00');
-            $this->RegisterPropertyString('Username', '');
-            $this->RegisterPropertyString('Password', '');
+            $this->RegisterPropertyString("IPAddress", "192.168.1.1");
+            $this->RegisterPropertyInteger("Port", 22);
+            $this->RegisterPropertyString("MAC", "00:00:00:00:00:00");
+            $this->RegisterPropertyString("Username", "");
+            $this->RegisterPropertyString("Password", "");
         }
 
         public function ApplyChanges()
@@ -20,9 +20,9 @@
             //Never delete this line!
             parent::ApplyChanges();
             
-            $sid_Test = $this->RegisterScript('Script_Test', 'Test', '<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx()."scripts/__ipsmodule.inc.php");\ninclude("../modules/SymconModules/SSHRemote/module.php");\necho (new SSHRemote('.$this->InstanceID.'))->exec("pwd");');
-            $sid_Wakeup = $this->RegisterScript('Script_Wakeup', '*** Wakeup ***', '<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx()."scripts/__ipsmodule.inc.php");\ninclude("../modules/SymconModules/SSHRemote/module.php");\necho (new SSHRemote('.$this->InstanceID.'))->WakeOnLAN("'.$this->ReadPropertyString('MAC').'");');
-            $eid_Update = $this->RegisterEventCyclic('Event_Update', 'Update', 0, 0, 0, 0, 1, 60, 'echo "Test"');
+            $sid_Test = $this->RegisterScript("Script_Test", "Test", "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\necho (new SSHRemote(".$this->InstanceID."))->exec(\"pwd\");");
+            $sid_Wakeup = $this->RegisterScript("Script_Wakeup", "*** Wakeup ***", "<? //Do not delete or modify.\ninclude(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\necho (new SSHRemote(".$this->InstanceID."))->WakeOnLAN();");
+            $eid_Update = $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 60, "echo \"Test\"");
             }
         
         /**
@@ -37,8 +37,8 @@
         
         public function Login()
         {
-            include_once(__DIR__ . 'SSH2.php');
-            include_once(__DIR__ . 'Crypt/RSA.php');            
+            include_once(__DIR__ . "SSH2.php");
+            include_once(__DIR__ . "Crypt/RSA.php");            
 
             $User = $this->ReadPropertyString("Username");
             $Key =  $this->ReadPropertyString("Password");
@@ -50,9 +50,9 @@
             $this->ssh->setTimeout(10);
             if ( !$this->ssh->login($User, $Key) ) 
             {
-                exit('Login Failed');
+                exit("Login Failed");
             }           
-            return 'Login succeed with User: '. $User;               
+            return "Login succeed with User: $User";               
         }
         
         public function exec($cmd)
@@ -71,20 +71,24 @@
                 $this->Login();
             }             
             $User = $this->ReadPropertyString("Username");            
-            $this->ssh->read(':~$');
+            $this->ssh->read(":~$");
             $this->ssh->write("sudo ".$cmd."\n");
-            $output = @$this->ssh->read('#[pP]assword[^:]*:|:~\$#', NET_SSH2_READ_REGEX);
-            if (preg_match('#[pP]assword[^:]*:#', $output)) {
+            $output = @$this->ssh->read("#[pP]assword[^:]*:|:~\$#", NET_SSH2_READ_REGEX);
+            if (preg_match("#[pP]assword[^:]*:#", $output)) {
                 $this->ssh->write($this->ReadPropertyString("Password")."\n");
                 $out = $this->ssh->read($User);
-                return str_replace($User, '', $out);                
+                return str_replace($User, "", $out);                
             }                                                 
         }
         
-        public function WakeOnLAN($mac, $broadcast = '192.168.1.255')
+        public function WakeOnLAN($mac = "", $broadcast = "192.168.1.255")
         {
-            $addr_byte = explode(':', $mac);
-            $hw_addr = '';
+            if ($mac == "")
+            {
+                $mac = $this->ReadPropertyString("MAC");
+            }
+            $addr_byte = explode(":", $mac);
+            $hw_addr = "";
             for ($a=0; $a <6; $a++) 
             {
                 $hw_addr .= chr(hexdec($addr_byte[$a]));
@@ -107,13 +111,13 @@
                 }
                 else 
                 {
-                    echo 'Magic packet failed!';
+                    echo "Magic packet failed!";
                     return FALSE;
                 }   
             }
             else
             {
-                echo 'Error creating socket!';
+                echo "Error creating socket!";
                 return FALSE;               
             }        
         }
