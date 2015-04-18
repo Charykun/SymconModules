@@ -3,14 +3,13 @@
     [
         { "name": "IPAddress", "type": "ValidationTextBox", "caption": "IP-Address" },
         { "name": "Port", "type": "NumberSpinner", "caption": "Port" },
+        { "name": "MAC", "type": "ValidationTextBox", "caption": "MAC-Address" },
+        { "type": "Label", "label": "Login:" },
         { "name": "Username", "type": "ValidationTextBox", "caption": "Username" },
-        { "name": "Password", "type": "PasswordTextBox", "caption": "Password" }
-        
+        { "name": "Password", "type": "PasswordTextBox", "caption": "Password" }        
     ],
     "actions":
     [
-        { "type": "Button", "label": "Test Login", "onClick": "include(IPS_GetKernelDirEx().\'scripts/__ipsmodule.inc.php\');\ninclude(\'../modules/SymconModules/SSHRemote/module.php\');\n(new SSHRemote($id))->Login(1)" }
-    ] 
-    
-    
+        { "type": "Button", "label": "Test Login", "onClick": "include(IPS_GetKernelDirEx().\'scripts/__ipsmodule.inc.php\');\ninclude(\'../modules/SymconModules/SSHRemote/module.php\');\necho (new SSHRemote($id))->Login()" }
+    ]  
 }
