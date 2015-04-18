@@ -10,6 +10,6 @@
     ],
     "actions":
     [
-        { "type": "Button", "label": "Test Login", "onClick": "include(IPS_GetKernelDirEx().\'scripts/__ipsmodule.inc.php\');\ninclude(\'../modules/SymconModules/SSHRemote/module.php\');\necho (new SSHRemote($id))->Login()" }
+        { "type": "Button", "label": "Test Login", "onClick": "include(IPS_GetKernelDirEx().\'scripts/__ipsmodule.inc.php\');\ninclude(\'../modules/SymconModules/SSHRemote/module.php\');\necho (new SSHRemote($id))->Login(1)" }
     ]  
 }
