@@ -59,8 +59,11 @@
             if ($Output)
             {
                 echo "Login succeed with User: $User";  
+            } 
+            else 
+            {    
+                return 1;
             }
-            return 1;
         }
         
         public function exec($cmd)
