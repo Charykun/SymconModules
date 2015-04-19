@@ -91,11 +91,11 @@
         
         public function WakeOnLAN($mac = "", $broadcast = "")
         {
-            if ( $mac == "" ) 
+            if ( $mac === "" ) 
             { 
                 $mac = $this->ReadPropertyString("MAC");                
             }
-            if ( $broadcast == "") 
+            if ( $broadcast === "") 
             {
                 $ip = explode(".", $this->ReadPropertyString("IPAddress"));
                 $broadcast = "$ip[0].$ip[1].$ip[2].255";
@@ -109,12 +109,12 @@
             if ( $s ) 
             {
                 // setting a broadcast option to socket:
-                socket_set_option($s, 1, 6, TRUE);
+                socket_set_option($s, 1, 6, true);
                 if ( socket_sendto($s, $msg, strlen($msg), 0, $broadcast, 7) ) 
                 {
                     //echo "Magic Packet sent successfully!";
                     socket_close($s);
-                    return TRUE;
+                    return true;
                 }
                 else
                 {
@@ -124,34 +124,34 @@
             else
             {
                 user_error("Error creating socket!", E_USER_ERROR);
-                return FALSE;               
+                return false;               
             }        
         }
 
         public function Update()
         {
-            $id = @$this->GetIDForIdent("IsOnline");
+            $id = $this->GetIDForIdent("IsOnline");
             if ( $this->ReadPropertyBoolean("Active") )
             {               
-                if ( @$this->Login() )
+                if ( $this->Login() )
                 {
-                    if ( GetValueBoolean($id) !== TRUE )
+                    if ( GetValueBoolean($id) !== true)
                     {
-                        SetValueBoolean($id, TRUE);
+                        SetValueBoolean($id, true);
                     }
                 }
                 else
                 {
-                    if ( GetValueBoolean($id) !== FALSE )
+                    if ( GetValueBoolean($id) !== false)
                     {
-                        SetValueBoolean($id, FALSE);
+                        SetValueBoolean($id, false);
                     }
                 }
             }
             else
             {
                 $this->UnregisterEvent("Event_Update");
-                SetValue($id, FALSE);
+                SetValue($id, false);
             }
         }
         
@@ -163,7 +163,7 @@
             $eid = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
             
             //properly update eventID
-            if ( $eid === false )
+            if ( $eid === false)
             {
                 $eid = 0;
             }
@@ -179,7 +179,7 @@
             IPS_SetIdent($eid, $Ident);
             IPS_SetName($eid, $Name);
             IPS_SetPosition($eid, $Position);
-            IPS_SetHidden($eid, TRUE);
+            IPS_SetHidden($eid, true);
             //IPS_SetReadOnly($eid, true);
             	
             IPS_SetEventCyclic($eid, $DateType, $DateInterval, $DateDays, $DateDaysInterval, $TimeTyp, $TimeInterval);      
