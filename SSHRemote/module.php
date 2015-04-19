@@ -130,9 +130,9 @@
 
         public function Update()
         {
+            $id = @$this->GetIDForIdent("IsOnline");
             if ( $this->ReadPropertyBoolean("Active") )
-            {
-                $id = @$this->GetIDForIdent("IsOnline");
+            {               
                 if ( $this->Login() )
                 {
                     if ( GetValue($id) != TRUE )
@@ -151,6 +151,7 @@
             else
             {
                 $this->UnregisterEvent("Event_Update");
+                SetValue($id, FALSE);
             }
         }
         
