@@ -1,0 +1,7 @@
+{
+    "elements":
+    [
+        { "type": "CheckBox", "name": "Active", "caption": "Active" },
+        { "name": "IPAddress", "type": "ValidationTextBox", "caption": "IP-Address" }     
+    ] 
+}

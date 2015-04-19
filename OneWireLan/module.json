@@ -5,8 +5,8 @@
 	"vendor": "Charykun",
 	"aliases": 
 	[
-		"OneWire Lan",
-        "1-Wire Lan"
+            "OneWire Lan",
+            "1-Wire Lan"
 	],
 	"parentRequirements": [],
 	"childRequirements": [],
