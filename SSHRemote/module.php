@@ -8,6 +8,7 @@
             
             //These lines are parsed on Symcon Startup or Instance creation
             //You can not use variables here. Just static values.
+            $this->RegisterPropertyBoolean("Active", false);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
             $this->RegisterPropertyInteger("Port", 22);
             $this->RegisterPropertyString("MAC", "00:00:00:00:00:00");
@@ -129,19 +130,27 @@
 
         public function Update()
         {
-            if ( $this->Login() )
+            if ( $this->ReadPropertyBoolean("Active") )
             {
-                if ( GetValue($this->GetIDForIdent("IsOnline")) != TRUE )
+                $id = @$this->GetIDForIdent("IsOnline");
+                if ( $this->Login() )
                 {
-                    SetValue($this->GetIDForIdent("IsOnline"), TRUE);
+                    if ( GetValue($id) != TRUE )
+                    {
+                        SetValue($id, TRUE);
+                    }
+                }
+                else
+                {
+                    if ( GetValue($id) != FALSE )
+                    {
+                        SetValue($id, FALSE);
+                    }
                 }
             }
             else
             {
-                if ( GetValue($this->GetIDForIdent("IsOnline")) != FALSE )
-                {
-                    SetValue($this->GetIDForIdent("IsOnline"), FALSE);
-                }
+                $this->UnregisterEvent("Event_Update");
             }
         }
         
@@ -178,5 +187,16 @@
             			
             return $eid;				
         }
+        
+        private function UnregisterEvent($Ident)
+        {
+            //search for already available events with proper ident
+            $eid = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
+            
+            if(IPS_EventExists($eid)) 
+            { 
+                IPS_DeleteEvent($eid);
+            }            
+        }         
     }
 ?>

@@ -1,6 +1,7 @@
 {
     "elements":
     [
+        { "type": "CheckBox", "name": "Active", "caption": "Active" },
         { "name": "IPAddress", "type": "ValidationTextBox", "caption": "IP-Address" },
         { "name": "Port", "type": "NumberSpinner", "caption": "Port" },
         { "name": "MAC", "type": "ValidationTextBox", "caption": "MAC-Address" },
