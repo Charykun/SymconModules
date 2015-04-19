@@ -88,9 +88,17 @@
             }                                                 
         }
         
-        public function WakeOnLAN($mac = "", $broadcast = "192.168.1.255")
+        public function WakeOnLAN($mac = "", $broadcast = "")
         {
-            if ( $mac == "" ) { $mac = $this->ReadPropertyString("MAC"); }
+            if ( $mac == "" ) 
+            { 
+                $mac = $this->ReadPropertyString("MAC");                
+            }
+            if ( $broadcast == "") 
+            {
+                $ip = explode(".", $this->ReadPropertyString("IPAddress"));
+                $broadcast = "$ip[0].$ip[1].$ip[2].255";
+            }
             $addr_byte = explode(":", $mac);
             $hw_addr = "";
             for ( $a=0; $a <6; $a++ ) { $hw_addr .= chr(hexdec($addr_byte[$a])); }    
@@ -106,11 +114,15 @@
                     //echo "Magic Packet sent successfully!";
                     socket_close($s);
                     return TRUE;
-                } 
+                }
+                else
+                {
+                    user_error("Error Magic Packet failed!", E_USER_ERROR);
+                }
             }
             else
             {
-                //echo "Error creating socket!";
+                user_error("Error creating socket!", E_USER_ERROR);
                 return FALSE;               
             }        
         }
