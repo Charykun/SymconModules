@@ -51,24 +51,19 @@
             
             $this->ssh = new Net_SSH2($this->ReadPropertyString("IPAddress"), $this->ReadPropertyInteger("Port"));
             $this->ssh->setTimeout(10);
-            if ( !$this->ssh->login($User, $Key) ) 
+            if ( $this->ssh->login($User, $Key) )
             {
-                return 0;
-                exit("Login Failed");
-            }     
-            if ($Output)
-            {
-                echo "Login succeed with User: $User";  
+                if ( $Output ) { echo "Login succeed with User: $User"; } else { return 1; }
             } 
-            else 
-            {    
-                return 1;
-            }
+            else
+            {
+                if ( $Output ) { echo "Login Failed!"; } else { return 0; }
+            }            
         }
         
         public function exec($cmd)
         {
-            if(!$this->ssh)
+            if ( !$this->ssh )
             {
                 $this->Login();
             } 
@@ -77,7 +72,7 @@
         
         public function execsu($cmd)
         {
-            if(!$this->ssh)
+            if ( !$this->ssh )
             {
                 $this->Login();
             }             
@@ -85,7 +80,8 @@
             $this->ssh->read(":~$");
             $this->ssh->write("sudo ".$cmd."\n");
             $output = @$this->ssh->read("#[pP]assword[^:]*:|:~\$#", NET_SSH2_READ_REGEX);
-            if (preg_match("#[pP]assword[^:]*:#", $output)) {
+            if ( preg_match("#[pP]assword[^:]*:#", $output) ) 
+            {
                 $this->ssh->write($this->ReadPropertyString("Password")."\n");
                 $out = $this->ssh->read($User);
                 return str_replace($User, "", $out);                
@@ -94,54 +90,46 @@
         
         public function WakeOnLAN($mac = "", $broadcast = "192.168.1.255")
         {
-            if ($mac == "")
-            {
-                $mac = $this->ReadPropertyString("MAC");
-            }
+            if ( $mac == "" ) { $mac = $this->ReadPropertyString("MAC"); }
             $addr_byte = explode(":", $mac);
             $hw_addr = "";
-            for ($a=0; $a <6; $a++) 
-            {
-                $hw_addr .= chr(hexdec($addr_byte[$a]));
-            }    
+            for ( $a=0; $a <6; $a++ ) { $hw_addr .= chr(hexdec($addr_byte[$a])); }    
             $msg = chr(255).chr(255).chr(255).chr(255).chr(255).chr(255);
-            for ($a = 1; $a <= 16; $a++) 
-            { 
-                $msg .= $hw_addr; 
-            }
+            for ( $a = 1; $a <= 16; $a++ ) { $msg .= $hw_addr; }
             $s = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
-            if ($s) 
+            if ( $s ) 
             {
                 // setting a broadcast option to socket:
                 socket_set_option($s, 1, 6, TRUE);
-                if(socket_sendto($s, $msg, strlen($msg), 0, $broadcast, 7)) 
+                if ( socket_sendto($s, $msg, strlen($msg), 0, $broadcast, 7) ) 
                 {
                     //echo "Magic Packet sent successfully!";
                     socket_close($s);
                     return TRUE;
-                }
-                else 
-                {
-                    echo "Magic packet failed!";
-                    return FALSE;
-                }   
+                } 
             }
             else
             {
-                echo "Error creating socket!";
+                //echo "Error creating socket!";
                 return FALSE;               
             }        
         }
 
         public function Update()
         {
-            if ( @$this->Login() )
+            if ( $this->Login() )
             {
-                SetValue($this->GetIDForIdent("IsOnline"), TRUE);
+                if ( GetValue($this->GetIDForIdent("IsOnline")) != TRUE )
+                {
+                    SetValue($this->GetIDForIdent("IsOnline"), TRUE);
+                }
             }
             else
             {
-                SetValue($this->GetIDForIdent("IsOnline"), FALSE);
+                if ( GetValue($this->GetIDForIdent("IsOnline")) != FALSE )
+                {
+                    SetValue($this->GetIDForIdent("IsOnline"), FALSE);
+                }
             }
         }
         
@@ -153,13 +141,13 @@
             $eid = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
             
             //properly update eventID
-            if($eid === false)
+            if ( $eid === false )
             {
                 $eid = 0;
             }
             
             //we need to create one
-            if($eid == 0)
+            if ( $eid === 0 )
             {
                 $eid = IPS_CreateEvent(1);
             }
