@@ -17,7 +17,7 @@
             //Never delete this line!
             parent::ApplyChanges();
             
-            if ( $this->GetIDForIdent("Active") !== FALSE )
+            if ( isset($this->Properties["Active"]) )
             {
                 if ( $this->ReadPropertyBoolean("Active") )
                 {
