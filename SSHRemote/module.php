@@ -133,18 +133,18 @@
             $id = @$this->GetIDForIdent("IsOnline");
             if ( $this->ReadPropertyBoolean("Active") )
             {               
-                if ( $this->Login() )
+                if ( @$this->Login() )
                 {
-                    if ( GetValue($id) != TRUE )
+                    if ( GetValueBoolean($id) !== TRUE )
                     {
-                        SetValue($id, TRUE);
+                        SetValueBoolean($id, TRUE);
                     }
                 }
                 else
                 {
-                    if ( GetValue($id) != FALSE )
+                    if ( GetValueBoolean($id) !== FALSE )
                     {
-                        SetValue($id, FALSE);
+                        SetValueBoolean($id, FALSE);
                     }
                 }
             }
