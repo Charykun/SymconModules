@@ -8,7 +8,7 @@
             
             //These lines are parsed on Symcon Startup or Instance creation
             //You can not use variables here. Just static values.
-            $this->RegisterPropertyBoolean("Active", 0);
+            $this->RegisterPropertyBoolean("Active", FALSE);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
         }
 
@@ -17,17 +17,7 @@
             //Never delete this line!
             parent::ApplyChanges();
             
-//            if ( isset($this->Properties["Active"]) )
-//            {
-//                if ( $this->ReadPropertyBoolean("Active") )
-//                {
-                    $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 10, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");
-//                }
-//                else
-//                {
-//                    $this->UnregisterEvent("Event_Update");
-//                }
-//            }               
+            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 10, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");              
         }
         
         /**
@@ -41,7 +31,7 @@
         {
             if ( $this->ReadPropertyBoolean("Active") )
             {
-                user_error("Active", E_USER_NOTICE);
+                //user_error("Active", E_USER_NOTICE);
             }        
             else 
             {
