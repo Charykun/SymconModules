@@ -8,7 +8,7 @@
             
             //These lines are parsed on Symcon Startup or Instance creation
             //You can not use variables here. Just static values.
-            $this->RegisterPropertyBoolean("Active", FALSE);
+            $this->RegisterPropertyBoolean("Active", false);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
         }
 
