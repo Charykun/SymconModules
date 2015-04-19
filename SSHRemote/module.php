@@ -26,7 +26,7 @@
             $this->RegisterVariableBoolean("IsOnline", "Online", "Switch");
             
             $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 2, 1, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\n(new SSHRemote(".$this->InstanceID."))->Update();");
-            }
+        }
         
         /**
          * This function will be available automatically after the module is imported with the module control.
