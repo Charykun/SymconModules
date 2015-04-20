@@ -34,6 +34,8 @@
                 $xml = new SimpleXMLElement("http://" . $this->ReadPropertyString("IPAddress") . "/details.xml", NULL, TRUE);
                 $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
                 $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower"), (float) $xml->VoltagePower);
+                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1"), (int) $xml->DevicesConnectedChannel1);                
+                $this->SetValue($this->RegisterVariableByParent(GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
                 //user_error("Active", E_USER_NOTICE);         
             }        
             else 
