@@ -2,6 +2,7 @@
     "elements":
     [
         { "type": "CheckBox", "name": "Active", "caption": "Active" },
-        { "name": "IPAddress", "type": "ValidationTextBox", "caption": "IP-Address" }     
+        { "name": "IPAddress", "type": "ValidationTextBox", "caption": "IP-Address" },
+        { "name": "Interval", "type": "IntervalBox", "caption": "Minutes" }
     ] 
 }
