@@ -36,6 +36,10 @@
                 $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower"), (float) $xml->VoltagePower);
                 $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1"), (int) $xml->DevicesConnectedChannel1);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
+                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2"), (int) $xml->DevicesConnectedChannel2);                
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "DataErrorsChannel2", "DataErrorsChannel2", 1), (int) $xml->DataErrorsChannel2);
+                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3"), (int) $xml->DevicesConnectedChannel3);                
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);                
                 //user_error("Active", E_USER_NOTICE);         
             }        
             else 
