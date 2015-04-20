@@ -33,7 +33,7 @@
             {
                 $xml = new SimpleXMLElement("http://" . $this->ReadPropertyString("IPAddress") . "/details.xml", NULL, TRUE);
                 $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
-                $this->SetValue($this->RegisterVariable("VoltagePower", "VoltagePower", 2), (float) $xml->VoltagePower);
+                $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower"), (float) $xml->VoltagePower);
                 //user_error("Active", E_USER_NOTICE);         
             }        
             else 
