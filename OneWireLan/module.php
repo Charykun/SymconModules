@@ -10,6 +10,7 @@
             //You can not use variables here. Just static values.
             $this->RegisterPropertyBoolean("Active", false);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
+            $this->RegisterPropertyInteger("Interval", "10");
         }
 
         public function ApplyChanges()
@@ -17,7 +18,7 @@
             //Never delete this line!
             parent::ApplyChanges();
             
-            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 10, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");              
+            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 1, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");              
         }
         
         /**
@@ -31,6 +32,7 @@
         {
             if ( $this->ReadPropertyBoolean("Active") )
             {
+                IPS_SetEventCyclic($this->GetIDForIdent("Event_Update"), 0, 0, 0, 0, 1, $this->ReadPropertyInteger("Interval"));
                 $xml = new SimpleXMLElement("http://" . $this->ReadPropertyString("IPAddress") . "/details.xml", NULL, TRUE);
                 $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
                 $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower"), (float) $xml->VoltagePower);
