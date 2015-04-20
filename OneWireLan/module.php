@@ -86,7 +86,7 @@
             {
                 $vid = IPS_CreateVariable($Type);
 		//configure it
-		IPS_SetParent($vid, $this->InstanceID);
+		IPS_SetParent($vid, $ParentID);
 		IPS_SetIdent($vid, $Ident);
 		IPS_SetName($vid, $Name);
 		IPS_SetPosition($vid, $Position);
