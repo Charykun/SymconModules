@@ -32,7 +32,7 @@
             if ( $this->ReadPropertyBoolean("Active") )
             {
                 $xml = new SimpleXMLElement("http://" . $this->ReadPropertyString("IPAddress") . "/details.xml", NULL, TRUE);
-                SetValueInteger($this->RegisterVariableInteger("PollCount", "PollCount"), $xml->PollCount);
+                SetValueInteger($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
                 //user_error("Active", E_USER_NOTICE);         
             }        
             else 
