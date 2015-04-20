@@ -10,7 +10,7 @@
             //You can not use variables here. Just static values.
             $this->RegisterPropertyBoolean("Active", false);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
-            $this->RegisterPropertyInteger("Interval", "10");
+            $this->RegisterPropertyInteger("Interval", 10);
         }
 
         public function ApplyChanges()
