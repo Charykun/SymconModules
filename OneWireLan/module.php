@@ -31,7 +31,9 @@
         {
             if ( $this->ReadPropertyBoolean("Active") )
             {
-                //user_error("Active", E_USER_NOTICE);
+                $xml = new SimpleXMLElement("http://" . $this->ReadPropertyString("IPAddress") . "/details.xml", NULL, TRUE);
+                SetValueInteger($this->RegisterVariableInteger("PollCount", "PollCount"), $xml->PollCount);
+                //user_error("Active", E_USER_NOTICE);         
             }        
             else 
             {
@@ -45,7 +47,7 @@
             $eid = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);
             
             //properly update eventID
-            if ( $eid === false )
+            if ( $eid === FALSE )
             {
                 $eid = 0;
             }
@@ -66,7 +68,7 @@
             	
             IPS_SetEventCyclic($eid, $DateType, $DateInterval, $DateDays, $DateDaysInterval, $TimeTyp, $TimeInterval);      
             IPS_SetEventScript($eid, $Content);
-            IPS_SetEventActive($eid, true);
+            IPS_SetEventActive($eid, TRUE);
             			
             return $eid;				
         }
