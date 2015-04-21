@@ -11,6 +11,7 @@
             $this->RegisterPropertyBoolean("Active", false);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
             $this->RegisterPropertyInteger("Interval", 10);
+            $this->CreateFloatProfile("mV", "", "", " mV", 0, 0, 0, 2);
         }
 
         public function ApplyChanges()
@@ -65,7 +66,7 @@
                     $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
                     $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vdd", "Vdd", 2, "~Volt"), (float) $Sensor->Vdd);  
                     $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vad", "Vad", 2, "~Volt"), (float) $Sensor->Vad);  
-                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vsense", "Vsense", 2, ""), (float) $Sensor->Vsense);  
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vsense", "Vsense", 2, "~mV"), (float) $Sensor->Vsense);  
                 }
             }        
             else 
@@ -77,6 +78,19 @@
         private function SetValue($ID, $Value)
         {
             if ( GetValue($ID) !== $Value ) { SetValue($ID, $Value); }
+        }
+        
+        private function CreateFloatProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
+        {
+            $Profile = IPS_GetVariableProfile($ProfileName);
+            if ($Profile !== FALSE)
+            {
+                IPS_CreateVariableProfile($ProfileName, 2);
+                IPS_SetVariableProfileIcon($ProfileName,  $Icon);
+                IPS_SetVariableProfileText($ProfileName, $Präfix, $Suffix);
+                IPS_SetVariableProfileValues($ProfileName, $MinValue, $MaxValue, $StepSize);
+                IPS_SetVariableProfileDigits($ProfileName, $Digits);
+            }
         }
 
         private function RegisterVariableByParent($ParentID, $Ident, $Name, $Type, $Profile = "", $Position = 0) 
