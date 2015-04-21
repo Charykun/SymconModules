@@ -82,14 +82,14 @@
         
         private function CreateFloatProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
         {
-            $Profile = IPS_VariableProfileExists("~".$ProfileName);
+            $Profile = IPS_VariableProfileExists($ProfileName);
             if ($Profile === FALSE)
             {
-                IPS_CreateVariableProfile("~".$ProfileName, 2);
-                IPS_SetVariableProfileIcon("~".$ProfileName,  $Icon);
-                IPS_SetVariableProfileText("~".$ProfileName, $Präfix, $Suffix);
-                IPS_SetVariableProfileValues("~".$ProfileName, $MinValue, $MaxValue, $StepSize);
-                IPS_SetVariableProfileDigits("~".$ProfileName, $Digits);
+                IPS_CreateVariableProfile($ProfileName, 2);
+                IPS_SetVariableProfileIcon($ProfileName,  $Icon);
+                IPS_SetVariableProfileText($ProfileName, $Präfix, $Suffix);
+                IPS_SetVariableProfileValues($ProfileName, $MinValue, $MaxValue, $StepSize);
+                IPS_SetVariableProfileDigits($ProfileName, $Digits);
             }
         }
 
