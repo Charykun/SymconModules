@@ -41,22 +41,31 @@
                 }
                 $xml = new SimpleXMLElement($URL, NULL, TRUE);
                 $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount", "", -5), (int) $xml->PollCount);
-                $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower", "", -4), (float) $xml->VoltagePower);
+                $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower", "~Volt", -4), (float) $xml->VoltagePower);
                 $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1", "", -3), (int) $xml->DevicesConnectedChannel1);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2), (float) $xml->VoltageChannel1);
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2, "~Volt"), (float) $xml->VoltageChannel1);
                 $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2", "", -2), (int) $xml->DevicesConnectedChannel2);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "DataErrorsChannel2", "DataErrorsChannel2", 1), (int) $xml->DataErrorsChannel2);
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "VoltageChannel2", "VoltageChannel2", 2), (float) $xml->VoltageChannel2);
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "VoltageChannel2", "VoltageChannel2", 2, "~Volt"), (float) $xml->VoltageChannel2);
                 $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3", "", -1), (int) $xml->DevicesConnectedChannel3);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);  
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2), (float) $xml->VoltageChannel3);                
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2, "~Volt"), (float) $xml->VoltageChannel3);                
                 //user_error("Active", E_USER_NOTICE);         
                 foreach ($xml->owd_DS18B20 as $Sensor) 
                 {
                     $VarIdent = "DS18B20_" . $Sensor->ROMId;
                     $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
                     $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
+                }
+                foreach ($xml->owd_DS2438 as $Sensor) 
+                {
+                    $VarIdent = "DS2438_" . $Sensor->ROMId;
+                    $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vdd", "Vdd", 2, "~Volt"), (float) $Sensor->Vdd);  
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vad", "Vad", 2, "~Volt"), (float) $Sensor->Vad);  
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vsense", "Vsense", 2, ""), (float) $Sensor->Vsense);  
                 }
             }        
             else 
