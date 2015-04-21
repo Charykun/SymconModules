@@ -34,17 +34,24 @@
             {
                 IPS_SetEventCyclic($this->GetIDForIdent("Event_Update"), 0, 0, 0, 0, 1, $this->ReadPropertyInteger("Interval"));
                 $xml = new SimpleXMLElement("http://" . $this->ReadPropertyString("IPAddress") . "/details.xml", NULL, TRUE);
-                $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
-                $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower"), (float) $xml->VoltagePower);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1"), (int) $xml->DevicesConnectedChannel1);                
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2), (float) $xml->VoltageChannel1);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2"), (int) $xml->DevicesConnectedChannel2);                
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "DataErrorsChannel2", "DataErrorsChannel2", 1), (int) $xml->DataErrorsChannel2);
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "VoltageChannel2", "VoltageChannel2", 2), (float) $xml->VoltageChannel2);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3"), (int) $xml->DevicesConnectedChannel3);                
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);  
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2), (float) $xml->VoltageChannel3);
+                if ( $xml === false )
+                {
+                    throw new Exception("Failed loading ...");
+                }
+                else 
+                {
+                    $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
+                    $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower"), (float) $xml->VoltagePower);
+                    $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1"), (int) $xml->DevicesConnectedChannel1);                
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2), (float) $xml->VoltageChannel1);
+                    $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2"), (int) $xml->DevicesConnectedChannel2);                
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "DataErrorsChannel2", "DataErrorsChannel2", 1), (int) $xml->DataErrorsChannel2);
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "VoltageChannel2", "VoltageChannel2", 2), (float) $xml->VoltageChannel2);
+                    $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3"), (int) $xml->DevicesConnectedChannel3);                
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);  
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2), (float) $xml->VoltageChannel3);
+                }
                 //user_error("Active", E_USER_NOTICE);         
             }        
             else 
