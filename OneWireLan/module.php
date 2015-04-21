@@ -37,7 +37,7 @@
                 $headers = @get_headers($URL);
                 if ( isset($headers) && count($headers) > 0 && ( strpos($headers[0], "200") === FALSE ) )
                 {
-                    throw new Exception("Failed loading ...");
+                    throw new Exception("Failed loading ... 1-Wire LAN unreachable!");
                 }
                 $xml = new SimpleXMLElement($URL, NULL, TRUE);
                 $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
@@ -52,6 +52,12 @@
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);  
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2), (float) $xml->VoltageChannel3);                
                 //user_error("Active", E_USER_NOTICE);         
+                foreach ($xml->owd_DS18B20 as $Sensor) 
+                {
+                    $VarIdent = "DS18B20_" . $Sensor->ROMId;
+                    $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $xml->Temperature);  
+                }
             }        
             else 
             {
