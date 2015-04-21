@@ -40,15 +40,15 @@
                     throw new Exception("Failed loading ... 1-Wire LAN unreachable!");
                 }
                 $xml = new SimpleXMLElement($URL, NULL, TRUE);
-                $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount"), (int) $xml->PollCount);
-                $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower"), (float) $xml->VoltagePower);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1"), (int) $xml->DevicesConnectedChannel1);                
+                $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount", -5), (int) $xml->PollCount);
+                $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower", -4), (float) $xml->VoltagePower);
+                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1", -3), (int) $xml->DevicesConnectedChannel1);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2), (float) $xml->VoltageChannel1);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2"), (int) $xml->DevicesConnectedChannel2);                
+                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2", -2), (int) $xml->DevicesConnectedChannel2);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "DataErrorsChannel2", "DataErrorsChannel2", 1), (int) $xml->DataErrorsChannel2);
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "VoltageChannel2", "VoltageChannel2", 2), (float) $xml->VoltageChannel2);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3"), (int) $xml->DevicesConnectedChannel3);                
+                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3", -1), (int) $xml->DevicesConnectedChannel3);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);  
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2), (float) $xml->VoltageChannel3);                
                 //user_error("Active", E_USER_NOTICE);         
@@ -56,7 +56,7 @@
                 {
                     $VarIdent = "DS18B20_" . $Sensor->ROMId;
                     $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
-                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $xml->Temperature);  
+                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
                 }
             }        
             else 
