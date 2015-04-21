@@ -82,8 +82,8 @@
         
         private function CreateFloatProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
         {
-            $Profile = @IPS_GetVariableProfile($ProfileName);
-            if ($Profile !== FALSE)
+            $Profile = IPS_VariableProfileExists("~".$ProfileName);
+            if ($Profile === FALSE)
             {
                 IPS_CreateVariableProfile($ProfileName, 2);
                 IPS_SetVariableProfileIcon($ProfileName,  $Icon);
