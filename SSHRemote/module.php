@@ -26,7 +26,7 @@
 
             $this->RegisterVariableBoolean("IsOnline", "Online", "Switch");
             
-            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 2, 1, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/SSHRemote/module.php\");\n(new SSHRemote(".$this->InstanceID."))->Update();");
+            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 2, 1, "SSHRemote_Update(".$this->InstanceID.");");
         }
         
         /**
@@ -39,8 +39,8 @@
         
         private $ssh;
         
-        public function Login($Output = 0)
-        {
+        public function Login($Output = FALSE ) 
+        {   user_error("Login", E_USER_NOTICE);
             include_once(__DIR__ . "/SSH2.php");
             include_once(__DIR__ . "/Crypt/RSA.php");            
 
