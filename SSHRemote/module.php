@@ -40,7 +40,7 @@
         private $ssh;
         
         public function Login($Output = FALSE ) 
-        {   user_error("Login", E_USER_NOTICE);
+        {   //user_error("Login", E_USER_NOTICE);
             include_once(__DIR__ . "/SSH2.php");
             include_once(__DIR__ . "/Crypt/RSA.php");            
 
@@ -54,7 +54,7 @@
             $this->ssh->setTimeout(10);
             if ( $this->ssh->login($User, $Key) )
             {
-                if ( $Output ) { echo "Login succeed with User: $User"; } else { return 1; }
+                if ( $Output ) { print "Login succeed with User: $User"; } else { return 1; }
             } 
             else
             {
