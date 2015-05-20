@@ -35,6 +35,7 @@
             {
                 //user_error("Active", E_USER_NOTICE);  
                 IPS_SetEventCyclic($this->GetIDForIdent("Event_Update"), 0, 0, 0, 0, 1, $this->ReadPropertyInteger("Interval"));
+                IPS_SetEventActive($this->GetIDForIdent("Event_Update"), FALSE);
                 $URL = "http://" . $this->ReadPropertyString("IPAddress") . "/details.xml";
                 $headers = @get_headers($URL);
                 if ( isset($headers) && count($headers) > 0 && ( strpos($headers[0], "200") === FALSE ) )
@@ -43,7 +44,7 @@
                 }
                 $xml = new SimpleXMLElement($URL, NULL, TRUE);
                 $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount", "", -5), (int) $xml->PollCount);
-                $this->SetValue($this->RegisterVariabeFloat("VoltagePower", "VoltagePower", "~Volt", -4), (float) $xml->VoltagePower);
+                $this->SetValue($this->RegisterVariableFloat("VoltagePower", "VoltagePower", "~Volt", -4), (float) $xml->VoltagePower);
                 $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1", "", -3), (int) $xml->DevicesConnectedChannel1);                
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
                 $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2, "~Volt"), (float) $xml->VoltageChannel1);
@@ -68,6 +69,7 @@
                     $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vad", "Vad", 2, "~Volt"), (float) $Sensor->Vad);  
                     $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vsense", "Vsense", 2, "mV"), (float) $Sensor->Vsense);  
                 }
+                IPS_SetEventActive($this->GetIDForIdent("Event_Update"), TRUE);
             }        
             else 
             {
