@@ -1,0 +1,14 @@
+{
+	"id": "{C86E39CE-E061-466A-A122-026C6D227199}",
+	"name": "Telegram",
+	"type": 3,
+	"vendor": "Charykun",
+	"aliases": 
+	[
+            "Telegram Messenger"
+	],
+	"parentRequirements": [],
+	"childRequirements": [],
+	"implemented": [],
+	"prefix": "Tg"
+}
