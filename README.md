@@ -11,6 +11,7 @@ _Supported 1-Wire devices:_
 * DS2438
 
 ## Telegram Messenger
+> https://www.telegram.org/
 
 `$ cd /usr/share/symcon/modules/SymconModules/Telegram/bin &&
 sudo telegram-cli -W -U root -c telegram.conf -k tg-server.pub`
