@@ -56,7 +56,7 @@
                     {
                         throw new Exception("IP unreachable!");
                     }
-                    $modbus = new PHPModbusMaster($this->ReadPropertyString("IPAddress"), "UDP");
+                    $modbus = new PHPModbusMaster($this->ReadPropertyString("IPAddress"), "TCP");
                     //for ($i = 0; $i < 100; $i++) 
                     //{                        
                         $Channels = $this->ReadPropertyInteger("AI");
