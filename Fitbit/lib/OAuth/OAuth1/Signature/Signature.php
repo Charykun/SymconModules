@@ -109,24 +109,7 @@ class Signature implements SignatureInterface
         return $signingKey;
     }
 
-    /**
-     * @param string $data
-     * @return string
-     * @throws UnsupportedHashAlgorithmException
-     */
-    protected function hash($data)
-    {
-        switch(strtoupper($this->algorithm)) {
-            case 'HMAC-SHA1':
-                //return hash_hmac('sha1', $data, $this->getSigningKey(), true);
-                return hmac_sha1($data, $this->getSigningKey());
-
-            default:
-                throw new UnsupportedHashAlgorithmException('Unsupported hashing algorithm (' . $this->algorithm . ') used.');
-        }
-    }
-    
-    protected function hmac_sha1($data, $key)
+       protected function hmac_sha1($data, $key)
 {
     // Adjust key to exactly 64 bytes
     if (strlen($key) > 64) {
@@ -148,4 +131,23 @@ class Signature implements SignatureInterface
 
     return sha1($opad.sha1($ipad.$data, true));
 }
+    
+    /**
+     * @param string $data
+     * @return string
+     * @throws UnsupportedHashAlgorithmException
+     */
+    protected function hash($data)
+    {
+        switch(strtoupper($this->algorithm)) {
+            case 'HMAC-SHA1':
+                //return hash_hmac('sha1', $data, $this->getSigningKey(), true);
+                return hmac_sha1($data, $this->getSigningKey());
+
+            default:
+                throw new UnsupportedHashAlgorithmException('Unsupported hashing algorithm (' . $this->algorithm . ') used.');
+        }
+    }
+    
+ 
 }
