@@ -19,7 +19,7 @@
             //Never delete this line!
             parent::ApplyChanges();
             
-            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 1, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");              
+            //$this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 1, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");              
         }
         
         /**
@@ -73,7 +73,7 @@
             }        
             else 
             {
-                $this->UnregisterEvent("Event_Update");
+                //$this->UnregisterEvent("Event_Update");
             }
         }
         

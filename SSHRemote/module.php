@@ -26,7 +26,7 @@
 
             $this->RegisterVariableBoolean("IsOnline", "Online", "Switch");
             
-            $this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 2, 1, "SSHRemote_Update(".$this->InstanceID.");");
+            //$this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 2, 1, "SSHRemote_Update(".$this->InstanceID.");");
         }
         
         /**
@@ -150,7 +150,7 @@
             }
             else
             {
-                $this->UnregisterEvent("Event_Update");
+                //$this->UnregisterEvent("Event_Update");
                 SetValue($id, false);
             }
         }
