@@ -19,8 +19,6 @@
             //Never delete this line!
             parent::Create();
             
-            //These lines are parsed on Symcon Startup or Instance creation
-            //You can not use variables here. Just static values.
             $this->RegisterPropertyBoolean("Active", false);       
         }
         
@@ -31,6 +29,8 @@
         {
             //Never delete this line!
             parent::ApplyChanges();             
+            
+            if ( $this->ReadProperty("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
         }
         
         /**
