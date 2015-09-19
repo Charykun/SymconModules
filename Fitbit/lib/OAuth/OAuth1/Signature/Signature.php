@@ -123,7 +123,7 @@ class Signature implements SignatureInterface
     {
         switch (strtoupper($this->algorithm)) {
             case 'HMAC-SHA1':
-                return hash_hmac('sha1', $data, $this->getSigningKey(), true);
+                return \hash_hmac('sha1', $data, $this->getSigningKey(), true);
 
             default:
                 throw new UnsupportedHashAlgorithmException(
