@@ -1,0 +1,14 @@
+{
+	"id": "{FF5AFF3E-BA13-40A0-9B9F-142CFC3C171F}",
+	"name": "Fitbit",
+	"type": 3,
+	"vendor": "Charykun",
+	"aliases": 
+	[
+            "Fitbit"
+	],
+	"parentRequirements": [],
+	"childRequirements": [],
+	"implemented": [],
+	"prefix": "Fitbit"
+}
