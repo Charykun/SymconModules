@@ -9,9 +9,9 @@
 
 namespace OAuth;
 
-//use Buzz\Browser;
-//use Buzz\Client\ClientInterface;
-//use Buzz\Client\Curl;
+use Buzz\Browser;
+use Buzz\Client\ClientInterface;
+use Buzz\Client\Curl;
 use OAuth\Common\Exception\Exception;
 
 class HTTPTransporterFactory
