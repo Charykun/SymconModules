@@ -12,13 +12,12 @@
         }
         
         /**
-         * Construct
-         * @param integer $InstanceID
+         * Create
          */        
-        public function __construct($InstanceID)
+        public function Create()
         {
             //Never delete this line!
-            parent::__construct($InstanceID);
+            parent::Create();
             
             //These lines are parsed on Symcon Startup or Instance creation
             //You can not use variables here. Just static values.

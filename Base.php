@@ -1,10 +1,10 @@
 <?php
     class BaseModule extends IPSModule
     { 
-        public function __construct($InstanceID)
+        public function Create()
         {
             //Never delete this line!
-            parent::__construct($InstanceID);
+            parent::Create();
         }
         public function ApplyChanges()
         {
