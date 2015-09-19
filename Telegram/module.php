@@ -38,6 +38,8 @@
         {
             //Never delete this line!
             parent::ApplyChanges();
+            
+            if ( $this->ReadPropertyBoolean("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
             $this->RegisterScript("Script_Bot", "*** Auto Answer ***", "<?\n\$pattern = array(\n'(Uhrzeit)' => 'Es ist '. date('H:i', time()) . ' Uhr.',\n'(Temp)' => 'Die Aussentemperatur betraegt ' . (string)GetValue(35891) . ' C',\n);");                        
             //$this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 15, "Tg_Update(".$this->InstanceID.");");
         }

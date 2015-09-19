@@ -19,6 +19,7 @@
             //Never delete this line!
             parent::ApplyChanges();
             
+            if ( $this->ReadPropertyBoolean("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
             //$this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 1, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");              
         }
         
