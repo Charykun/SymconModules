@@ -118,10 +118,34 @@ class Signature implements SignatureInterface
     {
         switch(strtoupper($this->algorithm)) {
             case 'HMAC-SHA1':
-                return hash_hmac('sha1', $data, $this->getSigningKey(), true);
+                //return hash_hmac('sha1', $data, $this->getSigningKey(), true);
+                return hmac_sha1($data, $this->getSigningKey());
 
             default:
                 throw new UnsupportedHashAlgorithmException('Unsupported hashing algorithm (' . $this->algorithm . ') used.');
         }
     }
+    
+    function hmac_sha1($data, $key)
+{
+    // Adjust key to exactly 64 bytes
+    if (strlen($key) > 64) {
+        $key = str_pad(sha1($key, true), 64, chr(0));
+    }
+    if (strlen($key) < 64) {
+        $key = str_pad($key, 64, chr(0));
+    }
+
+    // Outter and Inner pad
+    $opad = str_repeat(chr(0x5C), 64);
+    $ipad = str_repeat(chr(0x36), 64);
+
+    // Xor key with opad & ipad
+    for ($i = 0; $i < strlen($key); $i++) {
+        $opad[$i] = $opad[$i] ^ $key[$i];
+        $ipad[$i] = $ipad[$i] ^ $key[$i];
+    }
+
+    return sha1($opad.sha1($ipad.$data, true));
+}
 }
