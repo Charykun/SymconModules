@@ -103,7 +103,7 @@ abstract class AbstractSegment extends AbstractArray implements ArrayAccess
             return $str;
         }
 
-        $str = filter_var((string) $str, FILTER_UNSAFE_RAW, array('flags' => FILTER_FLAG_STRIP_LOW));
+        //$str = filter_var((string) $str, FILTER_UNSAFE_RAW, array('flags' => FILTER_FLAG_STRIP_LOW));
         $str = trim($str);
 
         return $str;
