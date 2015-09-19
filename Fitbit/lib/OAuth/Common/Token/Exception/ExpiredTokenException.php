@@ -1,5 +1,4 @@
 <?php
-
 namespace OAuth\Common\Token\Exception;
 
 use OAuth\Common\Exception\Exception;
@@ -9,4 +8,5 @@ use OAuth\Common\Exception\Exception;
  */
 class ExpiredTokenException extends Exception
 {
+
 }

@@ -1,13 +1,11 @@
 <?php
-
 namespace OAuth\Common\Consumer;
 
 /**
  * Value object for the credentials of an OAuth service.
  */
-class Credentials implements CredentialsInterface
+class Credentials
 {
-
     /**
      * @var string
      */
@@ -22,6 +20,7 @@ class Credentials implements CredentialsInterface
      * @var string
      */
     protected $callbackUrl;
+
 
     /**
      * @param string $consumerId
@@ -40,7 +39,7 @@ class Credentials implements CredentialsInterface
      */
     public function getCallbackUrl()
     {
-        return (string) $this->callbackUrl;
+        return $this->callbackUrl;
     }
 
     /**

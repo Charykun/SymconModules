@@ -1,5 +1,4 @@
 <?php
-
 namespace OAuth\OAuth1\Token;
 
 use OAuth\Common\Token\AbstractToken;
@@ -10,7 +9,6 @@ use OAuth\Common\Token\AbstractToken;
  */
 class StdOAuth1Token extends AbstractToken implements TokenInterface
 {
-
     /**
      * @var string
      */

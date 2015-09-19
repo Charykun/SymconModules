@@ -1,8 +1,6 @@
 <?php
-
 namespace OAuth\Common\Storage;
 
-use OAuth\Common\Storage\Exception\TokenNotFoundException;
 use OAuth\Common\Token\TokenInterface;
 
 /**
@@ -10,89 +8,23 @@ use OAuth\Common\Token\TokenInterface;
  */
 interface TokenStorageInterface
 {
-
     /**
-     * @param string $service
-     *
-     * @return TokenInterface
-     * @throws TokenNotFoundException
+     * @return \OAuth\Common\Token\TokenInterface
      */
-    public function retrieveAccessToken($service);
+    public function retrieveAccessToken();
 
     /**
-     * @param string $service
-     * @param TokenInterface $token
-     *
-     * @return TokenStorageInterface
+     * @param \OAuth\Common\Token\TokenInterface $token
      */
-    public function storeAccessToken($service, TokenInterface $token);
+    public function storeAccessToken(TokenInterface $token);
 
     /**
-     * @param string $service
-     *
      * @return bool
      */
-    public function hasAccessToken($service);
+    public function hasAccessToken();
 
     /**
-     * Delete the users token. Aka, log out.
-     *
-     * @param string $service
-     *
-     * @return TokenStorageInterface
-     */
-    public function clearToken($service);
-
-    /**
-     * Delete *ALL* user tokens. Use with care. Most of the time you will likely
-     * want to use clearToken() instead.
-     *
-     * @return TokenStorageInterface
-     */
-    public function clearAllTokens();
-
-    /**
-     * Store the authorization state related to a given service
-     *
-     * @param string $service
-     * @param string $state
-     *
-     * @return TokenStorageInterface
-     */
-    public function storeAuthorizationState($service, $state);
-
-    /**
-     * Check if an authorization state for a given service exists
-     *
-     * @param string $service
-     *
-     * @return bool
-     */
-    public function hasAuthorizationState($service);
-
-    /**
-     * Retrieve the authorization state for a given service
-     *
-     * @param string $service
-     *
-     * @return string
-     */
-    public function retrieveAuthorizationState($service);
-
-    /**
-     * Clear the authorization state of a given service
-     *
-     * @param string $service
-     *
-     * @return TokenStorageInterface
-     */
-    public function clearAuthorizationState($service);
-
-    /**
-     * Delete *ALL* user authorization states. Use with care. Most of the time you will likely
-     * want to use clearAuthorization() instead.
-     *
-     * @return TokenStorageInterface
-     */
-    public function clearAllAuthorizationStates();
+    * Delete the users token. Aka, log out.
+    */
+    public function clearToken();
 }

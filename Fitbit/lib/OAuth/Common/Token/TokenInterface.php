@@ -1,5 +1,4 @@
 <?php
-
 namespace OAuth\Common\Token;
 
 /**
@@ -7,7 +6,6 @@ namespace OAuth\Common\Token;
  */
 interface TokenInterface
 {
-
     /**
      * Denotes an unknown end of life time.
      */
@@ -18,48 +16,59 @@ interface TokenInterface
      */
     const EOL_NEVER_EXPIRES = -9002;
 
+    public function __construct($accessToken = null, $refreshToken = null, $lifetime = null, $extraParams = array() );
+
     /**
+     * @abstract
      * @return string
      */
     public function getAccessToken();
 
     /**
+     * @abstract
      * @return int
      */
     public function getEndOfLife();
 
     /**
+     * @abstract
      * @return array
      */
     public function getExtraParams();
 
     /**
-     * @param string $accessToken
+     * @abstract
+     * @param $accessToken
      */
     public function setAccessToken($accessToken);
 
     /**
-     * @param int $endOfLife
+     * @abstract
      */
     public function setEndOfLife($endOfLife);
 
     /**
-     * @param int $lifetime
+     * @abstract
+     * @param $lifetime
      */
     public function setLifetime($lifetime);
 
     /**
+     * @abstract
      * @param array $extraParams
      */
     public function setExtraParams(array $extraParams);
 
     /**
+     * @abstract
      * @return string
      */
     public function getRefreshToken();
 
     /**
+     * @abstract
      * @param string $refreshToken
      */
     public function setRefreshToken($refreshToken);
+
 }

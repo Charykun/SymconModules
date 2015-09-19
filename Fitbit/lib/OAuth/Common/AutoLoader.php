@@ -1,15 +1,12 @@
 <?php
-
 namespace OAuth\Common;
 
 /**
  * PSR-0 Autoloader
- *
  * @author ieter Hordijk <info@pieterhordijk.com>
  */
 class AutoLoader
 {
-
     /**
      * @var string The namespace prefix for this instance.
      */
@@ -29,7 +26,7 @@ class AutoLoader
     public function __construct($namespace, $path)
     {
         $this->namespace = ltrim($namespace, '\\');
-        $this->path = rtrim($path, '/\\') . DIRECTORY_SEPARATOR;
+        $this->path      = rtrim($path, '/\\') . DIRECTORY_SEPARATOR;
     }
 
     /**
@@ -44,19 +41,17 @@ class AutoLoader
         $class = ltrim($class, '\\');
 
         if (strpos($class, $this->namespace) === 0) {
-            $nsparts = explode('\\', $class);
-            $class = array_pop($nsparts);
-            $nsparts[ ] = '';
-            $path = $this->path . implode(DIRECTORY_SEPARATOR, $nsparts);
-            $path .= str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
+            $nsparts   = explode('\\', $class);
+            $class     = array_pop($nsparts);
+            $nsparts[] = '';
+            $path      = $this->path . implode(DIRECTORY_SEPARATOR, $nsparts);
+            $path     .= str_replace('_', DIRECTORY_SEPARATOR, $class) . '.php';
 
             if (file_exists($path)) {
                 require $path;
-
                 return true;
             }
         }
-
         return false;
     }
 
@@ -67,7 +62,7 @@ class AutoLoader
      */
     public function register()
     {
-        return spl_autoload_register([$this, 'load']);
+        return spl_autoload_register(array($this, 'load'));
     }
 
     /**
@@ -77,6 +72,6 @@ class AutoLoader
      */
     public function unregister()
     {
-        return spl_autoload_unregister([$this, 'load']);
+        return spl_autoload_unregister(array($this, 'load'));
     }
 }

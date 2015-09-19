@@ -10,13 +10,13 @@ use OAuth\Common\Http\Uri\UriInterface;
 use OAuth\Common\Storage\TokenStorageInterface;
 use OAuth\Common\Http\Client\ClientInterface;
 
-class FitBit extends AbstractService
+class Twitter extends AbstractService
 {
     public function __construct(Credentials $credentials, ClientInterface $httpClient, TokenStorageInterface $storage, SignatureInterface $signature, UriInterface $baseApiUri = null)
     {
         parent::__construct($credentials, $httpClient, $storage, $signature, $baseApiUri);
         if( null === $baseApiUri ) {
-            $this->baseApiUri = new Uri('https://api.fitbit.com/1/');
+            $this->baseApiUri = new Uri('https://api.twitter.com/1.1/');
         }
     }
 
@@ -25,7 +25,7 @@ class FitBit extends AbstractService
      */
     public function getRequestTokenEndpoint()
     {
-        return new Uri('https://api.fitbit.com/oauth/request_token');
+        return new Uri('https://api.twitter.com/oauth/request_token');
     }
 
     /**
@@ -33,7 +33,9 @@ class FitBit extends AbstractService
      */
     public function getAuthorizationEndpoint()
     {
-        return new Uri('https://www.fitbit.com/oauth/authorize');
+        // @todo if the app will post tweets, authorize must be used instead.
+        // figure something out re: that but it's late and i don't want to now
+        return new Uri('https://api.twitter.com/oauth/authenticate');
     }
 
     /**
@@ -41,7 +43,7 @@ class FitBit extends AbstractService
      */
     public function getAccessTokenEndpoint()
     {
-        return new Uri('https://api.fitbit.com/oauth/access_token');
+        return new Uri('https://api.twitter.com/oauth/access_token');
     }
 
     /**

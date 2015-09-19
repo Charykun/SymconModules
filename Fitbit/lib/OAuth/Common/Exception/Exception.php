@@ -1,5 +1,4 @@
 <?php
-
 namespace OAuth\Common\Exception;
 
 /**
@@ -7,4 +6,5 @@ namespace OAuth\Common\Exception;
  */
 class Exception extends \Exception
 {
+
 }

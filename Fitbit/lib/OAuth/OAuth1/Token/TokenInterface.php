@@ -1,5 +1,4 @@
 <?php
-
 namespace OAuth\OAuth1\Token;
 
 use OAuth\Common\Token\TokenInterface as BaseTokenInterface;
@@ -9,7 +8,6 @@ use OAuth\Common\Token\TokenInterface as BaseTokenInterface;
  */
 interface TokenInterface extends BaseTokenInterface
 {
-
     /**
      * @return string
      */
@@ -23,20 +21,20 @@ interface TokenInterface extends BaseTokenInterface
     /**
      * @return string
      */
-    public function getRequestTokenSecret();
+    function getRequestTokenSecret();
 
     /**
      * @param string $requestTokenSecret
      */
-    public function setRequestTokenSecret($requestTokenSecret);
+    function setRequestTokenSecret($requestTokenSecret);
 
     /**
      * @return string
      */
-    public function getRequestToken();
+    function getRequestToken();
 
     /**
      * @param string $requestToken
      */
-    public function setRequestToken($requestToken);
+    function setRequestToken($requestToken);
 }
