@@ -126,7 +126,7 @@ class Signature implements SignatureInterface
         }
     }
     
-    function hmac_sha1($data, $key)
+    protected function hmac_sha1($data, $key)
 {
     // Adjust key to exactly 64 bytes
     if (strlen($key) > 64) {
