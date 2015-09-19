@@ -33,9 +33,7 @@ class Scheme extends AbstractComponent
             return $data;
         }
 
-        $data = filter_var($data, FILTER_VALIDATE_REGEXP, array(
-            'options' => array('regexp' => '/^'.UrlConstants::SCHEME_REGEXP.'$/i'),
-        ));
+        //$data = filter_var($data, FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => '/^'.UrlConstants::SCHEME_REGEXP.'$/i'), ));
 
         if (! $data) {
             throw new RuntimeException('This class only deals with http URL');
