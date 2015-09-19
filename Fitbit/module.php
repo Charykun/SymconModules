@@ -40,6 +40,7 @@
         {            
             include_once(__DIR__ . "/lib/fitbitphp.php");
             $fitbit = new FitBitPHP("92d2d787ee41469ac638998cd92836d3", "e471aa7c8b19edc8c648b349be364199");
+            $fitbit->initSession();
             return $fitbit;
         }        
     }
