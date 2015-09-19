@@ -30,7 +30,7 @@
             //Never delete this line!
             parent::ApplyChanges();             
             
-            if ( $this->ReadProperty("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
+            if ( $this->ReadPropertyBoolean("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
         }
         
         /**
