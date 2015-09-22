@@ -98,20 +98,25 @@
             // start the session
             session_start();
             
-            if (!isset($_GET['code'])) 
-            {
-                $_GET['code'] = GetValueString($this->GetIDForIdent("RefreshToken"));
-            }
-            if ($_GET['code'] === "") 
+            $refreshToken = GetValueString($this->GetIDForIdent("RefreshToken"));            
+            if (($refreshToken === "") and (!isset($_GET['code']))) 
             {
                 // If we don't have an authorization code then get one
                 $authUrl = $provider->getAuthorizationUrl();
                 $_SESSION['oauth2state'] = $provider->getState();
                 header('Location: '.$authUrl);
-                exit;
-            }           
-                     
-            $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
+                exit;                             
+            }
+            if (isset($_GET['code']))
+            {
+                $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
+            }
+            else 
+            {
+                $grant = new League\OAuth2\Client\Grant\RefreshToken();
+                $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);
+            }                
+                 
             $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());
             var_dump($token->getRefreshToken());
             /*
