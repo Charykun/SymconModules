@@ -31,8 +31,7 @@
             parent::ApplyChanges();             
             
             if ( $this->ReadPropertyBoolean("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
-            $iid = (string) $this->$InstanceID;
-            $sid = $this->RegisterScript("Hook", "Hook", "<? //Do not delete or modify.\nFitbit_Update($iid);");
+            $sid = $this->RegisterScript("Hook", "Hook", "<? //Do not delete or modify.\nFitbit_Update(".$this->InstanceID.");");
             $this->RegisterHook("/hook/fitbit", $sid);
         }
         
