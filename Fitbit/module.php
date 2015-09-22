@@ -98,6 +98,7 @@
             // start the session
             session_start();
             
+            $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
             var_dump($token->getRefreshToken());
             /*
             if (!isset($_GET['code'])) 
