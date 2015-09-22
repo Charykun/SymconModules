@@ -45,6 +45,11 @@
          */
         public function Update()
         {            
+            if($_IPS['SENDER'] == "Execute") 
+            {
+		echo "This script cannot be used this way.";
+                return;
+            }
             /**
              * Workaround 
              */
