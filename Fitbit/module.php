@@ -66,13 +66,13 @@
             
             /*
              * Requires
-             */
-            spl_autoload_register("AutoLoader");
+             */           
             function AutoLoader($className)
             {
                 $file = str_replace('\\',DIRECTORY_SEPARATOR,$className);
                 require_once __DIR__ . "/lib/" . $file . ".php";
             }
+            spl_autoload_register("AutoLoader");
             require_once(__DIR__ . "/lib/GuzzleHttp/functions.php");
             require_once(__DIR__ . "/lib/GuzzleHttp/Promise/functions_include.php");
             require_once(__DIR__ . "/lib/GuzzleHttp/Psr7/functions_include.php");
