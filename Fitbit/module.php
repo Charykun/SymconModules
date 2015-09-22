@@ -23,6 +23,7 @@
             $this->RegisterPropertyString("ClientId", ""); 
             $this->RegisterPropertyString("ClientSecret", ""); 
             $this->RegisterPropertyString("RedirectUri", "http://Host:Port/hook/fitbit");
+            $this->RegisterPropertyString("RefreshToken", ""); 
         }
         
         /**
