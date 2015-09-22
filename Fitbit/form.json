@@ -1,12 +1,18 @@
 {
     "elements":
     [
-        { "type": "CheckBox", "name": "Active", "caption": "Active" }
+        { "type": "CheckBox", "name": "Active", "caption": "Active" },
+        { "type": "Label", "label": "Fitbit Settings: (https://dev.fitbit.com)" },
+        { "type": "ValidationTextBox", "name": "ClientId", "caption": "OAuth 2.0 Client ID" },
+        { "type": "ValidationTextBox", "name": "ClientSecret", "caption": "Client Secret" },
+        { "type": "ValidationTextBox", "name": "RedirectUri", "caption": "Callback URL" },
+        { "type": "Label", "label": "(https://Host:Port/hook/fitbit)" }
     ],
     "status":
     [
-        { "code": 102, "icon": "active", "caption": "Interface is open" },
-	{ "code": 104, "icon": "inactive", "caption": "Interface is closed" },
-	{ "code": 200, "icon": "error", "caption": "Interface is an error state. Please check message log for more information." }
+        { "code": 102, "icon": "active", "caption": "Login information valid" },
+	{ "code": 104, "icon": "inactive", "caption": "It is closed" },
+	{ "code": 200, "icon": "error", "caption": "It is an error state. Please check message log for more information." },
+        { "code": 201, "icon": "error", "caption": "Authentication failed" }
     ]    
 }
