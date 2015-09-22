@@ -110,13 +110,13 @@
             if (isset($_GET['code']))
             {
                 $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
+                $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());
+                header('Location: '.$this->ReadPropertyString("RedirectUri"));
+                exit;
             }
-            else 
-            {
-                $grant = new League\OAuth2\Client\Grant\RefreshToken();
-                $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);
-            }                
-                 
+             
+            $grant = new League\OAuth2\Client\Grant\RefreshToken();
+            $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);                
             $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());
             var_dump($token->getRefreshToken());
             /*
