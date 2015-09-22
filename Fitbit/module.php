@@ -90,12 +90,24 @@
             
             
             $provider = new djchen\OAuth2\Client\Provider\Fitbit([
-                "clientId"          => "229W3G",
-                "clientSecret"      => "e471aa7c8b19edc8c648b349be364199",
-                "redirectUri"       => "http://siemensag.dyndns.tv:85/hook/fitbit"
+                "clientId"          => $this->ReadPropertyString("ClientId"),
+                "clientSecret"      => $this->ReadPropertyString("ClientSecret"),
+                "redirectUri"       => $this->ReadPropertyString("RedirectUri")
             ]);
 
             // start the session
             session_start();
-        }        
+            
+            var_dump($token->getRefreshToken());
+            /*
+            if (!isset($_GET['code'])) 
+            {
+                // If we don't have an authorization code then get one
+                $authUrl = $provider->getAuthorizationUrl();
+                $_SESSION['oauth2state'] = $provider->getState();
+                header('Location: '.$authUrl);
+                exit;
+            } 
+            */     
+        }
     }
