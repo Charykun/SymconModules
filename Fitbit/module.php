@@ -23,7 +23,7 @@
             $this->RegisterPropertyString("ClientId", ""); 
             $this->RegisterPropertyString("ClientSecret", ""); 
             $this->RegisterPropertyString("RedirectUri", "http://Host:Port/hook/fitbit");
-            $this->RegisterPropertyString("RefreshToken", ""); 
+            $this->RegisterVariableString("RefreshToken", "RefreshToken");
         }
         
         /**
@@ -100,7 +100,7 @@
             
             if (!isset($_GET['code'])) 
             {
-                $_GET['code'] = $this->ReadPropertyString("RefreshToken");
+                $_GET['code'] = GetValueString($this->GetIDForIdent("RefreshToken"));
             }
             if ($_GET['code'] === "") 
             {
@@ -112,6 +112,7 @@
             }           
                      
             $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
+            $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());
             var_dump($token->getRefreshToken());
             /*
 
