@@ -19,7 +19,10 @@
             //Never delete this line!
             parent::Create();
             
-            $this->RegisterPropertyBoolean("Active", false);       
+            $this->RegisterPropertyBoolean("Active", false);      
+            $this->RegisterPropertyString("ClientId", ""); 
+            $this->RegisterPropertyString("ClientSecret", ""); 
+            $this->RegisterPropertyString("RedirectUri", "http://Host:Port/hook/fitbit");
         }
         
         /**
