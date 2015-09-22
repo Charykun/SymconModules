@@ -5,8 +5,7 @@
         { "type": "Label", "label": "Fitbit Settings: (https://dev.fitbit.com)" },
         { "type": "ValidationTextBox", "name": "ClientId", "caption": "OAuth 2.0 Client ID" },
         { "type": "ValidationTextBox", "name": "ClientSecret", "caption": "Client Secret" },
-        { "type": "ValidationTextBox", "name": "RedirectUri", "caption": "Callback URL" },
-        { "type": "Label", "label": "(https://Host:Port/hook/fitbit)" }
+        { "type": "ValidationTextBox", "name": "RedirectUri", "caption": "Callback URL: (https://Host:Port/hook/fitbit)" }
     ],
     "status":
     [
