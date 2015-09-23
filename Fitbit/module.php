@@ -55,13 +55,7 @@
                 $this->SetStatus(104); 
                 IPS_SetScriptTimer($sid, 0);
             }
-
         }
-        
-        /**
-         * Some Const
-         */
-        const FITBIT_CLASSPATH = "/lib";
         
         /**
          * Fitbit_Update();
@@ -147,7 +141,6 @@
             } catch (Exception $ex) 
             {
                 $this->SetStatus(201);  
-                IPS_SetScriptTimer($this->GetIDForIdent("Hook"), 0);
                 $this->SetValue($this->GetIDForIdent("RefreshToken"),""); 
                 echo "Not Authorized! Please login with browser (http://Host:Port/hook/fitbit)";
                 return;
@@ -166,7 +159,6 @@
             catch (Exception $ex) 
             {
                 $this->SetStatus(200);  
-                IPS_SetScriptTimer($this->GetIDForIdent("Hook"), 0);
                 echo "Login error!";                
                 return;
             }  
@@ -184,8 +176,6 @@
             $this->SetValue($this->GetIDForIdent("Steps"), $response["summary"]["steps"]);
             $this->SetValue($this->GetIDForIdent("Distances"), $response["summary"]["distances"][0]["distance"]);
             $this->SetValue($this->GetIDForIdent("Floors"), $response["summary"]["floors"]);
-            $this->SetValue($this->GetIDForIdent("CaloriesOut"), $response["summary"]["caloriesOut"]);
-
-            
+            $this->SetValue($this->GetIDForIdent("CaloriesOut"), $response["summary"]["caloriesOut"]);           
         }
     }
