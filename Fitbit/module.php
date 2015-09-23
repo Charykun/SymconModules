@@ -24,6 +24,14 @@
             $this->RegisterPropertyString("ClientSecret", ""); 
             $this->RegisterPropertyString("RedirectUri", "http://Host:Port/hook/fitbit");
             $this->RegisterVariableString("RefreshToken", "RefreshToken");
+            IPS_SetHidden($this->GetIDForIdent("RefreshToken"), TRUE); 
+            $this->RegisterVariableString("Username", "Username", "", 1);
+            $this->RegisterVariableString("Battery", "Battery", "", 2);
+            $this->RegisterVariableInteger("lastSyncTime", "lastSyncTime", "UnixTimestamp", 3);
+            $this->RegisterVariableInteger("Steps", "Steps", "", 4);
+            $this->RegisterVariableFloat("Distances", "Distances", "", 5);           
+            $this->RegisterVariableInteger("Floors", "Floors", "", 6);
+            $this->RegisterVariableInteger("CaloriesOut", "Calories", "", 7);
         }
         
         /**
@@ -34,9 +42,20 @@
             //Never delete this line!
             parent::ApplyChanges();             
             
-            if ( $this->ReadPropertyBoolean("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
             $sid = $this->RegisterScript("Hook", "Hook", "<? //Do not delete or modify.\nFitbit_Update(".$this->InstanceID.");");
-            $this->RegisterHook("/hook/fitbit", $sid);
+            IPS_SetHidden($sid, TRUE); 
+            $this->RegisterHook("/hook/fitbit", $sid);           
+            if ( $this->ReadPropertyBoolean("Active") ) 
+            { 
+                $this->SetStatus(102); 
+                IPS_SetScriptTimer($sid, 60);
+            }
+            else 
+            { 
+                $this->SetStatus(104); 
+                IPS_SetScriptTimer($sid, 0);
+            }
+
         }
         
         /**
@@ -49,11 +68,6 @@
          */
         public function Update()
         {            
-            if($_IPS['SENDER'] == "Execute") 
-            {
-		echo "This script cannot be used this way.";
-                return;
-            }
             /**
              * Workaround 
              */
@@ -94,33 +108,84 @@
                 "clientSecret"      => $this->ReadPropertyString("ClientSecret"),
                 "redirectUri"       => $this->ReadPropertyString("RedirectUri")
             ]);
-
-            // start the session
-            session_start();
-            
-            $refreshToken = GetValueString($this->GetIDForIdent("RefreshToken"));            
-            if (($refreshToken === "") and (!isset($_GET['code']))) 
+                    
+            $refreshToken = GetValueString($this->GetIDForIdent("RefreshToken")); 
+            if ($refreshToken === "")
             {
-                // If we don't have an authorization code then get one
-                $authUrl = $provider->getAuthorizationUrl();
-                $_SESSION['oauth2state'] = $provider->getState();
-                header('Location: '.$authUrl);
-                exit;                             
+                $this->SetStatus(201);
+                if ($_IPS['SENDER'] == "Execute") 
+                {
+                    echo "Not Authorized! Please login with browser (http://Host:Port/hook/fitbit)";
+                    return;
+                }
+                
+                // start the session
+                session_start();
+                
+                if (!isset($_GET['code']))
+                {
+                    // If we don't have an authorization code then get one
+                    $authUrl = $provider->getAuthorizationUrl();
+                    $_SESSION['oauth2state'] = $provider->getState();
+                    header('Location: '.$authUrl);
+                    exit;  
+                }
+                else
+                {
+                   $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
+                    $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());
+                    header('Location: '.$this->ReadPropertyString("RedirectUri"));
+                    exit; 
+                }
             }
-            if (isset($_GET['code']))
-            {
-                $token = $provider->getAccessToken('authorization_code', ['code' => $_GET['code']]);
-                $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());
-                header('Location: '.$this->ReadPropertyString("RedirectUri"));
-                exit;
-            }
-             
+                       
             $grant = new League\OAuth2\Client\Grant\RefreshToken();
-            $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);                
-            $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());
-            var_dump($token->getRefreshToken());
-            /*
+            try 
+            {
+                $token = $provider->getAccessToken($grant, ['refresh_token' => $refreshToken]);                
+                $this->SetValue($this->GetIDForIdent("RefreshToken"), $token->getRefreshToken());                
+            } catch (Exception $ex) 
+            {
+                $this->SetStatus(201);  
+                IPS_SetScriptTimer($this->GetIDForIdent("Hook"), 0);
+                $this->SetValue($this->GetIDForIdent("RefreshToken"),""); 
+                echo "Not Authorized! Please login with browser (http://Host:Port/hook/fitbit)";
+                return;
+            }
 
-            */     
+            try 
+            {
+                $this->SetStatus(102); 
+                $userDetails = $provider->getResourceOwner($token);
+                if ($_IPS['SENDER'] != "TimerEvent") 
+                {
+                    echo "Hello " . $userDetails->getDisplayName() . "!" . PHP_EOL; 
+                    echo "Login successful!";   
+                }                
+            } 
+            catch (Exception $ex) 
+            {
+                $this->SetStatus(200);  
+                IPS_SetScriptTimer($this->GetIDForIdent("Hook"), 0);
+                echo "Login error!";                
+                return;
+            }  
+            
+            $this->SetValue($this->GetIDForIdent("Username"), $userDetails->getDisplayName());
+            $request = $provider->getAuthenticatedRequest("GET", "https://api.fitbit.com/1/user/-/devices.json", $token);
+            $response = $provider->getResponse($request);
+            $this->SetValue($this->GetIDForIdent("Battery"), $response[0]["battery"]);
+            $date = new \DateTime((string) $response[0]["lastSyncTime"]);
+            $timestamp = $date->getTimestamp();
+            $this->SetValue($this->GetIDForIdent("lastSyncTime"), $timestamp );
+            $date = date("Y-m-d");
+            $request = $provider->getAuthenticatedRequest("GET", "https://api.fitbit.com/1/user/-/activities/date/$date.json", $token);
+            $response = $provider->getResponse($request);
+            $this->SetValue($this->GetIDForIdent("Steps"), $response["summary"]["steps"]);
+            $this->SetValue($this->GetIDForIdent("Distances"), $response["summary"]["distances"][0]["distance"]);
+            $this->SetValue($this->GetIDForIdent("Floors"), $response["summary"]["floors"]);
+            $this->SetValue($this->GetIDForIdent("CaloriesOut"), $response["summary"]["caloriesOut"]);
+
+            
         }
     }
