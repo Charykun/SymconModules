@@ -79,6 +79,7 @@
             
             if(IPS_EventExists($eid)) 
             { 
+                IPS_SetEventActive($eid, false);
                 IPS_DeleteEvent($eid);
             }            
         }  
@@ -146,7 +147,7 @@
         protected function CreateIntegerProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize)
         {
             $Profile = IPS_VariableProfileExists($ProfileName);
-            if ($Profile === FALSE)
+            if ($Profile === false)
             {
                 IPS_CreateVariableProfile($ProfileName, 1);
                 IPS_SetVariableProfileIcon($ProfileName,  $Icon);
@@ -158,7 +159,7 @@
         protected function CreateFloatProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
         {
             $Profile = IPS_VariableProfileExists($ProfileName);
-            if ($Profile === FALSE)
+            if ($Profile === false)
             {
                 IPS_CreateVariableProfile($ProfileName, 2);
                 IPS_SetVariableProfileIcon($ProfileName,  $Icon);
@@ -171,7 +172,7 @@
         protected function CreateStringProfile($ProfileName, $Icon, $Präfix, $Suffix)
         {
             $Profile = IPS_VariableProfileExists($ProfileName);
-            if ($Profile === FALSE)
+            if ($Profile === false)
             {
                 IPS_CreateVariableProfile($ProfileName, 3);
                 IPS_SetVariableProfileIcon($ProfileName,  $Icon);
