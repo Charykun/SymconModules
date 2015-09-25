@@ -23,15 +23,23 @@
             $this->RegisterPropertyString("ClientId", ""); 
             $this->RegisterPropertyString("ClientSecret", ""); 
             $this->RegisterPropertyString("RedirectUri", "http://Host:Port/hook/fitbit");
+            $this->CreateStringProfile("Fitbit_Battery", "Battery", "", "");
+            $this->CreateIntegerProfile("Fitbit_Steps", "Motion", "", "", "0", "", "1");
+            $this->CreateFloatProfile("Fitbit_km", "Distance", "", " km", "0", "", "", "2");
+            $this->CreateIntegerProfile("Fitbit_Floors", "Intensity", "", "", "0", "", "1");
+            $this->CreateIntegerProfile("Fitbit_Calories", "Popcorn", "", " kcal", "0", "", "1");
+            $this->CreateStringProfile("Fitbit_Sleep", "Cloud", "", "");
             $this->RegisterVariableString("RefreshToken", "RefreshToken");
             IPS_SetHidden($this->GetIDForIdent("RefreshToken"), TRUE); 
             $this->RegisterVariableString("Username", "Username", "", 1);
-            $this->RegisterVariableString("Battery", "Battery", "", 2);
-            $this->RegisterVariableInteger("lastSyncTime", "lastSyncTime", "UnixTimestamp", 3);
-            $this->RegisterVariableInteger("Steps", "Steps", "", 4);
-            $this->RegisterVariableFloat("Distances", "Distances", "", 5);           
-            $this->RegisterVariableInteger("Floors", "Floors", "", 6);
-            $this->RegisterVariableInteger("CaloriesOut", "Calories", "", 7);
+            $this->RegisterVariableInteger("lastSyncTime", "lastSyncTime", "UnixTimestamp", 2);
+            $this->RegisterVariableString("Battery", "Battery", "Fitbit_Battery", 3);          
+            $this->RegisterVariableInteger("Steps", "Steps", "Fitbit_Steps", 4);
+            $this->RegisterVariableFloat("Distances", "Distances", "Fitbit_km", 5);           
+            $this->RegisterVariableInteger("Floors", "Floors", "Fitbit_Floors", 6);
+            $this->RegisterVariableInteger("CaloriesOut", "Calories", "Fitbit_Calories", 7);
+            $this->RegisterVariableString("totalMinutesAsleep", "Sleep", "Fitbit_Sleep", 8); 
+            $this->RegisterVariableString("totalTimeInBed", "In Bed", "Fitbit_Sleep", 9); 
         }
         
         /**
@@ -42,7 +50,7 @@
             //Never delete this line!
             parent::ApplyChanges();             
             
-            $sid = $this->RegisterScript("Hook", "Hook", "<? //Do not delete or modify.\nFitbit_Update(".$this->InstanceID.");");
+            $sid = $this->RegisterScript("Hook", "Hook", "<? //Do not delete or modify.\nFitbit_Update(".$this->InstanceID.", \"\");");
             IPS_SetHidden($sid, TRUE); 
             $this->RegisterHook("/hook/fitbit", $sid);           
             if ( $this->ReadPropertyBoolean("Active") ) 
@@ -59,8 +67,10 @@
         
         /**
          * Fitbit_Update();
+         * @param string $request
+         * @return array
          */
-        public function Update()
+        public function Update($request = "")
         {            
             /**
              * Workaround 
@@ -107,7 +117,7 @@
             if ($refreshToken === "")
             {
                 $this->SetStatus(201);
-                if ($_IPS['SENDER'] == "Execute") 
+                if ($_IPS['SENDER'] === "Execute") 
                 {
                     echo "Not Authorized! Please login with browser (http://Host:Port/hook/fitbit)";
                     return;
@@ -150,7 +160,7 @@
             {
                 $this->SetStatus(102); 
                 $userDetails = $provider->getResourceOwner($token);
-                if ($_IPS['SENDER'] != "TimerEvent") 
+                if ($_IPS['SENDER'] === "WebHook") 
                 {
                     echo "Hello " . $userDetails->getDisplayName() . "!" . PHP_EOL; 
                     echo "Login successful!";   
@@ -163,19 +173,42 @@
                 return;
             }  
             
-            $this->SetValue($this->GetIDForIdent("Username"), $userDetails->getDisplayName());
-            $request = $provider->getAuthenticatedRequest("GET", "https://api.fitbit.com/1/user/-/devices.json", $token);
-            $response = $provider->getResponse($request);
-            $this->SetValue($this->GetIDForIdent("Battery"), $response[0]["battery"]);
-            $date = new \DateTime((string) $response[0]["lastSyncTime"]);
-            $timestamp = $date->getTimestamp();
-            $this->SetValue($this->GetIDForIdent("lastSyncTime"), $timestamp );
-            $date = date("Y-m-d");
-            $request = $provider->getAuthenticatedRequest("GET", "https://api.fitbit.com/1/user/-/activities/date/$date.json", $token);
-            $response = $provider->getResponse($request);
-            $this->SetValue($this->GetIDForIdent("Steps"), $response["summary"]["steps"]);
-            $this->SetValue($this->GetIDForIdent("Distances"), $response["summary"]["distances"][0]["distance"]);
-            $this->SetValue($this->GetIDForIdent("Floors"), $response["summary"]["floors"]);
-            $this->SetValue($this->GetIDForIdent("CaloriesOut"), $response["summary"]["caloriesOut"]);           
+            if ($request === "")
+            {
+                $this->SetValue($this->GetIDForIdent("Username"), $userDetails->getDisplayName());
+                $request = $provider->getAuthenticatedRequest("GET", "https://api.fitbit.com/1/user/-/devices.json", $token);
+                $response = $provider->getResponse($request);
+                $this->SetValue($this->GetIDForIdent("Battery"), $response[0]["battery"]);
+                $date = new \DateTime((string) $response[0]["lastSyncTime"]);
+                $timestamp = $date->getTimestamp();
+                $this->SetValue($this->GetIDForIdent("lastSyncTime"), $timestamp );
+                $date = date("Y-m-d");
+                $request = $provider->getAuthenticatedRequest("GET", "https://api.fitbit.com/1/user/-/activities/date/$date.json", $token);
+                $response = $provider->getResponse($request);
+                $this->SetValue($this->GetIDForIdent("Steps"), $response["summary"]["steps"]);
+                $this->SetValue($this->GetIDForIdent("Distances"), $response["summary"]["distances"][0]["distance"]);
+                $this->SetValue($this->GetIDForIdent("Floors"), $response["summary"]["floors"]);
+                $this->SetValue($this->GetIDForIdent("CaloriesOut"), $response["summary"]["caloriesOut"]); 
+                $request = $provider->getAuthenticatedRequest("GET", "https://api.fitbit.com/1/user/-/sleep/date/$date.json", $token);
+                $response = $provider->getResponse($request);
+                $this->SetValue($this->GetIDForIdent("totalMinutesAsleep"), date('H:i', mktime(0,$response["summary"]["totalMinutesAsleep"]))); 
+                $this->SetValue($this->GetIDForIdent("totalTimeInBed"), date('H:i', mktime(0,$response["summary"]["totalTimeInBed"]))); 
+            }
+            else 
+            {
+                return $provider->getResponse($provider->getAuthenticatedRequest("GET", $request, $token));
+            }
+        }
+        
+        /**
+         * Fitbit_GetDailyActivitySummary("yyyy-MM-dd");
+         * @param string $date
+         * @return array
+         */
+        public function GetDailyActivitySummary($date = "")
+        {
+            if ($date === "") { $date = date("Y-m-d"); }
+            $response = $this->Update("https://api.fitbit.com/1/user/-/activities/date/$date.json");
+            return $response;
         }
     }

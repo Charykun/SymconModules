@@ -142,6 +142,42 @@
             IPS_SetVariableCustomProfile($vid, $Profile);
             return $vid;
 	}
+
+        protected function CreateIntegerProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize)
+        {
+            $Profile = IPS_VariableProfileExists($ProfileName);
+            if ($Profile === FALSE)
+            {
+                IPS_CreateVariableProfile($ProfileName, 1);
+                IPS_SetVariableProfileIcon($ProfileName,  $Icon);
+                IPS_SetVariableProfileText($ProfileName, $Präfix, $Suffix);
+                IPS_SetVariableProfileValues($ProfileName, $MinValue, $MaxValue, $StepSize);
+            }
+        }         
+        
+        protected function CreateFloatProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
+        {
+            $Profile = IPS_VariableProfileExists($ProfileName);
+            if ($Profile === FALSE)
+            {
+                IPS_CreateVariableProfile($ProfileName, 2);
+                IPS_SetVariableProfileIcon($ProfileName,  $Icon);
+                IPS_SetVariableProfileText($ProfileName, $Präfix, $Suffix);
+                IPS_SetVariableProfileValues($ProfileName, $MinValue, $MaxValue, $StepSize);
+                IPS_SetVariableProfileDigits($ProfileName, $Digits);
+            }
+        } 
+        
+        protected function CreateStringProfile($ProfileName, $Icon, $Präfix, $Suffix)
+        {
+            $Profile = IPS_VariableProfileExists($ProfileName);
+            if ($Profile === FALSE)
+            {
+                IPS_CreateVariableProfile($ProfileName, 3);
+                IPS_SetVariableProfileIcon($ProfileName,  $Icon);
+                IPS_SetVariableProfileText($ProfileName, $Präfix, $Suffix);
+            }
+        }        
         
  	protected function RegisterHook($Hook, $TargetID)
 	{
