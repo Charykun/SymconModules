@@ -30,7 +30,7 @@
             $this->CreateIntegerProfile("Fitbit_Calories", "Popcorn", "", " kcal", "0", "", "1");
             $this->CreateStringProfile("Fitbit_Sleep", "Cloud", "", "");
             $this->RegisterVariableString("RefreshToken", "RefreshToken");
-            IPS_SetHidden($this->GetIDForIdent("RefreshToken"), TRUE); 
+            IPS_SetHidden($this->GetIDForIdent("RefreshToken"), true); 
             $this->RegisterVariableString("Username", "Username", "", 1);
             $this->RegisterVariableInteger("lastSyncTime", "lastSyncTime", "UnixTimestamp", 2);
             $this->RegisterVariableString("Battery", "Battery", "Fitbit_Battery", 3);          
@@ -51,7 +51,7 @@
             parent::ApplyChanges();             
             
             $sid = $this->RegisterScript("Hook", "Hook", "<? //Do not delete or modify.\nFitbit_Update(".$this->InstanceID.", \"\");");
-            IPS_SetHidden($sid, TRUE); 
+            IPS_SetHidden($sid, true); 
             $this->RegisterHook("/hook/fitbit", $sid);           
             if ( $this->ReadPropertyBoolean("Active") ) 
             { 
