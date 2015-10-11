@@ -56,7 +56,7 @@
             if ( $this->ReadPropertyBoolean("Active") ) 
             { 
                 $this->SetStatus(102); 
-                IPS_SetScriptTimer($sid, 60);
+                IPS_SetScriptTimer($sid, 60 * 15);
             }
             else 
             { 

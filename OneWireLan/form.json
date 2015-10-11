@@ -2,6 +2,13 @@
     "elements":
     [
         { "type": "CheckBox", "name": "Active", "caption": "Active" },
+        { "type": "Select", "name": "DeviceType", "caption": "DeviceType",
+            "options": 
+            [
+                { "label": "OW-SERVER-ENET", "value": 0 },
+                { "label": "OWSERVER (OWFS OWNet)", "value": 1 }
+            ]
+        },
         { "name": "IPAddress", "type": "ValidationTextBox", "caption": "IP-Address" },
         { "name": "Interval", "type": "IntervalBox", "caption": "Seconds" }
     ],

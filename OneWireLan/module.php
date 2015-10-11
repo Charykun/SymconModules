@@ -1,88 +1,138 @@
 <?php
     class OneWireLan extends IPSModule
     {
+        /**
+         * Log Message
+         * @param string $Message
+         */
+        protected function Log($Message)
+        {
+            IPS_LogMessage(__CLASS__, $Message);
+        }
+
+        /**
+         * Create
+         */         
         public function Create()
         {
             //Never delete this line!
             parent::Create();
             
-            //These lines are parsed on Symcon Startup or Instance creation
-            //You can not use variables here. Just static values.
             $this->RegisterPropertyBoolean("Active", false);
+            $this->RegisterPropertyInteger("DeviceType", 0);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
             $this->RegisterPropertyInteger("Interval", 10);
             $this->CreateFloatProfile("mV", "", "", " mV", 0, 0, 0, 2);
         }
 
+        /**
+         * ApplyChanges
+         */
         public function ApplyChanges()
         {
             //Never delete this line!
             parent::ApplyChanges();
             
-            if ( $this->ReadPropertyBoolean("Active") ) { $this->SetStatus(102); } else { $this->SetStatus(104); }
-            //$this->RegisterEventCyclic("Event_Update", "Update", 0, 0, 0, 0, 1, 1, "include(IPS_GetKernelDirEx().\"scripts/__ipsmodule.inc.php\");\ninclude(\"../modules/SymconModules/OneWireLan/module.php\");\n(new OneWireLan(".$this->InstanceID."))->Update();");              
+            if ( $this->ReadPropertyBoolean("Active") ) 
+            { 
+                $this->SetStatus(102);              
+            } 
+            else 
+            { 
+                $this->SetStatus(104); 
+            }                        
         }
         
-        /**
-         * This function will be available automatically after the module is imported with the module control.
-         * Using the custom prefix this function will be callable from PHP and JSON-RPC through:
-         *
-         * XXX_XXXXX($id);
-         *
-        */
         public function Update()
         {
-            if ( $this->ReadPropertyBoolean("Active") )
+            if ($this->ReadPropertyInteger("DeviceType") === 0)
             {
-                //user_error("Active", E_USER_NOTICE);  
-                IPS_SetEventCyclic($this->GetIDForIdent("Event_Update"), 0, 0, 0, 0, 1, $this->ReadPropertyInteger("Interval"));
-                IPS_SetEventActive($this->GetIDForIdent("Event_Update"), FALSE);
-                $URL = "http://" . $this->ReadPropertyString("IPAddress") . "/details.xml";
-                $headers = @get_headers($URL);
-                if ( isset($headers) && count($headers) > 0 && ( strpos($headers[0], "200") === FALSE ) )
-                {
-                    throw new Exception("Failed loading ... 1-Wire LAN unreachable!");
-                }
-                $xml = new SimpleXMLElement($URL, NULL, TRUE);
-                $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount", "", -5), (int) $xml->PollCount);
-                $this->SetValue($this->RegisterVariableFloat("VoltagePower", "VoltagePower", "~Volt", -4), (float) $xml->VoltagePower);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1", "", -3), (int) $xml->DevicesConnectedChannel1);                
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2, "~Volt"), (float) $xml->VoltageChannel1);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2", "", -2), (int) $xml->DevicesConnectedChannel2);                
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "DataErrorsChannel2", "DataErrorsChannel2", 1), (int) $xml->DataErrorsChannel2);
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "VoltageChannel2", "VoltageChannel2", 2, "~Volt"), (float) $xml->VoltageChannel2);
-                $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3", "", -1), (int) $xml->DevicesConnectedChannel3);                
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);  
-                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2, "~Volt"), (float) $xml->VoltageChannel3);                       
-                foreach ($xml->owd_DS18B20 as $Sensor) 
-                {
-                    $VarIdent = "DS18B20_" . $Sensor->ROMId;
-                    $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
-                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
-                }
-                foreach ($xml->owd_DS2438 as $Sensor) 
-                {
-                    $VarIdent = "DS2438_" . $Sensor->ROMId;
-                    $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
-                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
-                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vdd", "Vdd", 2, "~Volt"), (float) $Sensor->Vdd);  
-                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vad", "Vad", 2, "~Volt"), (float) $Sensor->Vad);  
-                    $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vsense", "Vsense", 2, "mV"), (float) $Sensor->Vsense);  
-                }
-                IPS_SetEventActive($this->GetIDForIdent("Event_Update"), TRUE);
-            }        
-            else 
+                $this->Update_0();
+            }
+            else
             {
-                //$this->UnregisterEvent("Event_Update");
+                $this->Update_1();
             }
         }
         
+        private function Update_0()
+        {
+            $URL = "http://" . $this->ReadPropertyString("IPAddress") . "/details.xml";
+            $headers = @get_headers($URL);
+            if ( isset($headers) && count($headers) > 0 && ( strpos($headers[0], "200") === FALSE ) )
+            {
+                throw new Exception("Failed loading ... 1-Wire LAN unreachable!");
+            }
+            $xml = new SimpleXMLElement($URL, NULL, TRUE);
+            $this->SetValue($this->RegisterVariableInteger("PollCount", "PollCount", "", -5), (int) $xml->PollCount);
+            $this->SetValue($this->RegisterVariableFloat("VoltagePower", "VoltagePower", "~Volt", -4), (float) $xml->VoltagePower);
+            $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel1", "DevicesConnectedChannel1", "", -3), (int) $xml->DevicesConnectedChannel1);                
+            $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "DataErrorsChannel1", "DataErrorsChannel1", 1), (int) $xml->DataErrorsChannel1);
+            $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel1"), "VoltageChannel1", "VoltageChannel1", 2, "~Volt"), (float) $xml->VoltageChannel1);
+            $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel2", "DevicesConnectedChannel2", "", -2), (int) $xml->DevicesConnectedChannel2);                
+            $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "DataErrorsChannel2", "DataErrorsChannel2", 1), (int) $xml->DataErrorsChannel2);
+            $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel2"), "VoltageChannel2", "VoltageChannel2", 2, "~Volt"), (float) $xml->VoltageChannel2);
+            $this->SetValue($this->RegisterVariableInteger("DevicesConnectedChannel3", "DevicesConnectedChannel3", "", -1), (int) $xml->DevicesConnectedChannel3);                
+            $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "DataErrorsChannel3", "DataErrorsChannel3", 1), (int) $xml->DataErrorsChannel3);  
+            $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent("DevicesConnectedChannel3"), "VoltageChannel3", "VoltageChannel3", 2, "~Volt"), (float) $xml->VoltageChannel3);                       
+            foreach ($xml->owd_DS18B20 as $Sensor) 
+            {
+                $VarIdent = "DS18B20_" . $Sensor->ROMId;
+                $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
+            }
+            foreach ($xml->owd_DS2438 as $Sensor) 
+            {
+                $VarIdent = "DS2438_" . $Sensor->ROMId;
+                $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarIdent), (int) $Sensor->Health);
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Temp", "Temperature", 2, "~Temperature"), (float) $Sensor->Temperature);  
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vdd", "Vdd", 2, "~Volt"), (float) $Sensor->Vdd);  
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vad", "Vad", 2, "~Volt"), (float) $Sensor->Vad);  
+                $this->SetValue($this->RegisterVariableByParent($this->GetIDForIdent($VarIdent), $VarIdent . "_Vsense", "Vsense", 2, "mV"), (float) $Sensor->Vsense);  
+            }            
+        }
+        
+        private function Update_1()
+        {
+            require_once(__DIR__ . "/lib/ownet_php54fixed.php");
+            //connect to owserver
+            $ow=new OWNet("tcp://" . $this->ReadPropertyString("IPAddress") . ":4304");
+            if ($ow) 
+            {
+                $this->Log("OWnet Connected!");
+                $ow_dir=$ow->dir("/");
+                if ($ow_dir) 
+                {
+                    $dirs=explode(",",$ow_dir['data_php']);
+                    foreach ($dirs as $dev)
+                    {
+                        print_r($ow->dir($dev));
+                    }
+                }
+            }
+        }
+        
+        /**
+         * SetValue
+         * @param integer $ID
+         * @param type $Value
+         */
         private function SetValue($ID, $Value)
         {
             if ( GetValue($ID) !== $Value ) { SetValue($ID, $Value); }
         }
         
+        /**
+         * CreateFloatProfile
+         * @param string $ProfileName
+         * @param string $Icon
+         * @param string $Präfix
+         * @param string $Suffix
+         * @param float $MinValue
+         * @param float $MaxValue
+         * @param integer $StepSize
+         * @param integer $Digits
+         */
         private function CreateFloatProfile($ProfileName, $Icon, $Präfix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
         {
             $Profile = IPS_VariableProfileExists($ProfileName);
@@ -95,7 +145,17 @@
                 IPS_SetVariableProfileDigits($ProfileName, $Digits);
             }
         }
-
+        
+        /**
+         * RegisterVariableByParent
+         * @param integer $ParentID
+         * @param string $Ident
+         * @param string $Name
+         * @param integer $Type
+         * @param string $Profile
+         * @param integer $Position
+         * @return integer
+         */
         private function RegisterVariableByParent($ParentID, $Ident, $Name, $Type, $Profile = "", $Position = 0) 
         {
             if($Profile !== "") 
@@ -143,44 +203,5 @@
             //this update does not affect any custom profile choices
             IPS_SetVariableCustomProfile($vid, $Profile);
             return $vid;
-	}
-        
-        private function RegisterEventCyclic($Ident, $Name, $DateType, $DateInterval, $DateDays, $DateDaysInterval, $TimeTyp, $TimeInterval, $Content = "<?\n\n//Autogenerated script\n\n?>", $Position = 0)
-        {
-            //search for already available events with proper ident
-            $eid = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);            
-            //properly update eventID
-            if ( $eid === FALSE )
-            {
-                $eid = 0;
-            }            
-            //we need to create one
-            if ( $eid === 0 )
-            {
-                $eid = IPS_CreateEvent(1);
-            }            
-            //configure it
-            IPS_SetParent($eid, $this->InstanceID);
-            IPS_SetIdent($eid, $Ident);
-            IPS_SetName($eid, $Name);
-            IPS_SetPosition($eid, $Position);
-            IPS_SetHidden($eid, TRUE);
-            //IPS_SetReadOnly($eid, true);
-            
-            IPS_SetEventCyclic($eid, $DateType, $DateInterval, $DateDays, $DateDaysInterval, $TimeTyp, $TimeInterval);      
-            IPS_SetEventScript($eid, $Content);
-            IPS_SetEventActive($eid, TRUE);            			
-            return $eid;				
-        }
-        
-        private function UnregisterEvent($Ident)
-        {
-            //search for already available events with proper ident
-            $eid = @IPS_GetObjectIDByIdent($Ident, $this->InstanceID);            
-            if(IPS_EventExists($eid)) 
-            { 
-                IPS_DeleteEvent($eid);
-            }            
-        }        
+	}       
     }
-?>
