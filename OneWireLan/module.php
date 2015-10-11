@@ -126,14 +126,14 @@
                                 }
                             break;
                             case "1D":
-                                $counterA=$ow->read("$dev/counters.A",true);
+                                $counterA=$ow->read("$dev/counters.A",false);
                                 if (strlen($counterA)>0)
                                 {
                                     $VarIdent = $type . "_" . $fam . "_" . $id . "_countA";
                                     $VarName = $type . " " . $fam . "." . $id . " " . $alias . " Counters.A";
                                     $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarName), (int) $counterA);
                                 }    
-                                $counterB=$ow->read("$dev/counters.B",true);
+                                $counterB=$ow->read("$dev/counters.B",false);
                                 if (strlen($counterB)>0)
                                 {
                                     $VarIdent = $type . "_" . $fam . "_" . $id . "_countB";
