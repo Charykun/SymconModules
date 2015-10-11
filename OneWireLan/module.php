@@ -45,8 +45,9 @@
         
         public function Update()
         {
+            $this->Log("Update ...");
             if ($this->ReadPropertyInteger("DeviceType") === 0)
-            {
+            {               
                 return $this->Update_0();
             }
             else
@@ -106,7 +107,13 @@
                     $dirs=explode(",",$ow_dir['data_php']);
                     foreach ($dirs as $dev)
                     {
-                        return $ow->dir($dev);
+                        /* read standard device details */
+                        $fam=$ow->read("$dev/family");
+                        if (!$fam) continue;
+                        $id=$ow->read("$dev/id");
+                        $alias=$ow->get("$dev/alias");
+                        $type=$ow->get("$dev/type");
+                        $this->Log("ID: $id ALIAS: $alias TYP: $type");
                     }
                 }
             }
