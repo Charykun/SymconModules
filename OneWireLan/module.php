@@ -120,7 +120,7 @@
                                 $temp=$ow->read("$dev/temperature",true);
                                 if (strlen($temp)>0)
                                 {
-                                    $VarIdent = $type . "_" . $fam . "." . $id . "_temp";
+                                    $VarIdent = $type . "_" . $fam . "_" . $id . "_temp";
                                     $VarName = $type . " " . $fam . "." . $id . " " . $alias . " Temperature";
                                     $this->SetValue($this->RegisterVariableFloat($VarIdent, $VarName, "~Temperature"), (float) $temp);
                                 }
@@ -129,14 +129,14 @@
                                 $counterA=$ow->read("$dev/counters.A",true);
                                 if (strlen($counterA)>0)
                                 {
-                                    $VarIdent = $type . "_" . $fam . "." . $id . "_countA";
+                                    $VarIdent = $type . "_" . $fam . "_" . $id . "_countA";
                                     $VarName = $type . " " . $fam . "." . $id . " " . $alias . " Counters.A";
                                     $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarName), (int) $counterA);
                                 }    
                                 $counterB=$ow->read("$dev/counters.B",true);
                                 if (strlen($counterB)>0)
                                 {
-                                    $VarIdent = $type . "_" . $fam . "." . $id . "_countB";
+                                    $VarIdent = $type . "_" . $fam . "_" . $id . "_countB";
                                     $VarName = $type . " " . $fam . "." . $id . " " . $alias . " Counters.B";
                                     $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarName), (int) $counterB);
                                 }                               
