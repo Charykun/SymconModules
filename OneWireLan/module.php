@@ -47,11 +47,11 @@
         {
             if ($this->ReadPropertyInteger("DeviceType") === 0)
             {
-                $this->Update_0();
+                return $this->Update_0();
             }
             else
             {
-                $this->Update_1();
+                return $this->Update_1();
             }
         }
         
@@ -106,7 +106,7 @@
                     $dirs=explode(",",$ow_dir['data_php']);
                     foreach ($dirs as $dev)
                     {
-                        print_r($ow->dir($dev));
+                        return $ow->dir($dev);
                     }
                 }
             }
