@@ -21,6 +21,7 @@
             $this->RegisterPropertyBoolean("Active", false);
             $this->RegisterPropertyInteger("DeviceType", 0);
             $this->RegisterPropertyString("IPAddress", "192.168.1.1");
+            $this->RegisterPropertyInteger("Port", 4304);
             $this->RegisterPropertyInteger("Interval", 10);
             $this->CreateFloatProfile("mV", "", "", " mV", 0, 0, 0, 2);
         }
@@ -97,10 +98,9 @@
         {
             require_once(__DIR__ . "/lib/ownet_php54fixed.php");
             //connect to owserver
-            $ow=new OWNet("tcp://" . $this->ReadPropertyString("IPAddress") . ":4304");
+            $ow=new OWNet("tcp://" . $this->ReadPropertyString("IPAddress") . ":" . $this->ReadPropertyInteger("Port"));
             if ($ow) 
             {
-                $this->Log("OWnet Connected!");
                 $ow_dir=$ow->dir("/");
                 if ($ow_dir) 
                 {
@@ -114,6 +114,36 @@
                         $alias=$ow->get("$dev/alias");
                         $type=$ow->get("$dev/type");
                         $this->Log("FAM: $fam ID: $id ALIAS: $alias TYP: $type");
+                        switch ($fam) 
+                        {
+                            case "28": case "10": case "22":
+                                $temp=$ow->read("$dev/temperature",true);
+                                if (strlen($temp)>0)
+                                {
+                                    $VarIdent = $type . "_" . $fam . "." . $id . "_temp";
+                                    $VarName = $type . " " . $fam . "." . $id . " " . $alias . " Temperature";
+                                    $this->SetValue($this->RegisterVariableFloat($VarIdent, $VarName, "~Temperature"), (float) $temp);
+                                }
+                            break;
+                            case "1D":
+                                $counterA=$ow->read("$dev/counters.A",true);
+                                if (strlen($counterA)>0)
+                                {
+                                    $VarIdent = $type . "_" . $fam . "." . $id . "_countA";
+                                    $VarName = $type . " " . $fam . "." . $id . " " . $alias . " CountersA";
+                                    $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarName), (int) $counterA);
+                                }    
+                                $counterB=$ow->read("$dev/counters.B",true);
+                                if (strlen($counterB)>0)
+                                {
+                                    $VarIdent = $type . "_" . $fam . "." . $id . "_countB";
+                                    $VarName = $type . " " . $fam . "." . $id . " " . $alias . " CounterB";
+                                    $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarName), (int) $counterB);
+                                }                               
+                            break;
+                            default:
+                            break;
+                        }
                     }
                 }
             }

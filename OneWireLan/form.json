@@ -10,6 +10,7 @@
             ]
         },
         { "name": "IPAddress", "type": "ValidationTextBox", "caption": "IP-Address" },
+        { "name": "Port", "type": "NumberSpinner", "caption": "Port" },
         { "name": "Interval", "type": "IntervalBox", "caption": "Seconds" }
     ],
     "status":
