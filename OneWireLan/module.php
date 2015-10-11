@@ -142,6 +142,7 @@
                                 }                               
                             break;
                             default:
+                                $this->Log("$id ($alias): Type $type Family $fam not really implemented yet");
                             break;
                         }
                     }
