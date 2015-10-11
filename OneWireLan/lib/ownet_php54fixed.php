@@ -520,7 +520,7 @@ class OWNet{
 							$ret['data_php']=bcadd($ret['data_php'],0,0);	// integer (using bcmath for bigger precision)
 						}elseif($type[0]=='u'){
 							$ret['data_php']=bcadd($ret['data_php'],0,0);	// unsigned integer (using bcmath for bigger precision)
-							if (bccmp($ret['data_php'],0,0)==-1){
+							if (bccomp($ret['data_php'],0,0)==-1){   //bccmp
 								$ret['data_php']=substr($ret['data_php'],1);		// be shure that it's unsigned
 							}
 						}elseif(in_array($type[0],array('f','t',chr(152)))){
