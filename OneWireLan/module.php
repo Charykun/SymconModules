@@ -130,14 +130,14 @@
                                 if (strlen($counterA)>0)
                                 {
                                     $VarIdent = $type . "_" . $fam . "." . $id . "_countA";
-                                    $VarName = $type . " " . $fam . "." . $id . " " . $alias . " CountersA";
+                                    $VarName = $type . " " . $fam . "." . $id . " " . $alias . " Counters.A";
                                     $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarName), (int) $counterA);
                                 }    
                                 $counterB=$ow->read("$dev/counters.B",true);
                                 if (strlen($counterB)>0)
                                 {
                                     $VarIdent = $type . "_" . $fam . "." . $id . "_countB";
-                                    $VarName = $type . " " . $fam . "." . $id . " " . $alias . " CounterB";
+                                    $VarName = $type . " " . $fam . "." . $id . " " . $alias . " Counters.B";
                                     $this->SetValue($this->RegisterVariableInteger($VarIdent, $VarName), (int) $counterB);
                                 }                               
                             break;
