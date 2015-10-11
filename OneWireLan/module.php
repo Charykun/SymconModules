@@ -113,7 +113,7 @@
                         $id=$ow->read("$dev/id");
                         $alias=$ow->get("$dev/alias");
                         $type=$ow->get("$dev/type");
-                        $this->Log("ID: $id ALIAS: $alias TYP: $type");
+                        $this->Log("FAM: $fam ID: $id ALIAS: $alias TYP: $type");
                     }
                 }
             }
