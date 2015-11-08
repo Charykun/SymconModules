@@ -75,20 +75,20 @@
             /**
              * Workaround 
              */
-            function hash($algo, $data, $raw_output = false)
+            if (function_exists('hash_hmac') === false)
             {
-                shell_exec("touch /tmp/hash");shell_exec("touch /tmp/hash_data");
-                file_put_contents("/tmp/hash_data", $data);
-                shell_exec("/usr/bin/php -B \"file_put_contents('/tmp/hash', hash('$algo',file_get_contents('/tmp/hash_data'),$raw_output));\"");
-                return (file_get_contents("/tmp/hash"));
-            }
-            function hash_hmac($algo, $data, $key, $raw_output = false)
-            {
-                shell_exec("touch /tmp/hash_hmac"); shell_exec("touch /tmp/hash_hmac_data"); shell_exec("touch /tmp/hash_hmac_key");
-                file_put_contents("/tmp/hash_hmac_data", $data);
-                file_put_contents("/tmp/hash_hmac_key", $key);
-                shell_exec("/usr/bin/php -B \"file_put_contents('/tmp/hash_hmac', hash_hmac('$algo',file_get_contents('/tmp/hash_hmac_data'),file_get_contents('/tmp/hash_hmac_key'),$raw_output));\"");
-                return (file_get_contents("/tmp/hash_hmac"));
+                if ( file_exists("/usr/bin/php") === false )
+                {
+                    exec("apt-get install php5-cli -y");
+                }
+                function hash($algo, $data, $raw_output = false)
+                {
+                    return exec("php -r \"print(hash( '$algo', '$canonical_request', $raw_output ));\"");
+                }
+                function hash_hmac($algo, $data, $key, $raw_output = false)
+                {
+                    return exec("php -r \"print(hash_hmac( '$algo', '$data', '$key', $raw_output));\"");
+                }
             }
             
             /*
