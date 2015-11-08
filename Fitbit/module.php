@@ -106,6 +106,7 @@
             require_once(__DIR__ . "/lib/Fitbit.php");
             require_once(__DIR__ . "/lib/FitbitUser.php");
             
+            exec("mkdir /usr/share/symcon/session/");
             
             $provider = new djchen\OAuth2\Client\Provider\Fitbit([
                 "clientId"          => $this->ReadPropertyString("ClientId"),
