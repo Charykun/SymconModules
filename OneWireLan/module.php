@@ -46,7 +46,6 @@
         
         public function Update()
         {
-            $this->Log("Update ...");
             if ($this->ReadPropertyInteger("DeviceType") === 0)
             {               
                 return $this->Update_0();
