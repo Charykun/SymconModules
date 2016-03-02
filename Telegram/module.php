@@ -50,7 +50,8 @@
         public function Update()
         {           
             if ( $this->ReadPropertyBoolean("Active") )
-            {    
+            {   
+                $this->client = $this->Telegram_Create_Client();
                 $this->client->start();
                 if ( $this->client->getProcess()->isStarted() )
                 {
@@ -139,6 +140,7 @@
             if ( is_string($User) and $User !== '' and is_string($Message) and $Message !== '' )
             {
                 $User = str_replace(' ', '_', $User);
+                $this->client = $this->Telegram_Create_Client();
                 $this->client->start();
                 if ( $this->client->getProcess()->isStarted() )
                 {
@@ -168,6 +170,7 @@
         {
             if ( is_string($Phone) and $Phone !== '' and is_string($First_Name) and $First_Name !== '' and is_string($Last_Name) and $Last_Name !== '' )
             {
+                $this->client = $this->Telegram_Create_Client();
                 $this->client->start();
                 if ( $this->client->getProcess()->isStarted() )
                 {
@@ -194,6 +197,7 @@
                 {
                     throw new Exception("Contact not found!");
                 }
+                $this->client = $this->Telegram_Create_Client();
                 $this->client->start();
                 if ( $this->client->getProcess()->isStarted() )
                 {
