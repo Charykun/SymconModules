@@ -10,8 +10,8 @@
     ],
     "status":
     [
-        { "code": 102, "icon": "active", "caption": "Active" },
-	{ "code": 104, "icon": "inactive", "caption": "Inactive" },
+        { "code": 102, "icon": "active", "caption": "Logged in!" },
+	{ "code": 104, "icon": "inactive", "caption": "Disconnected" },
 	{ "code": 200, "icon": "error", "caption": "It is an error state. Please check message log for more information." },
         { "code": 201, "icon": "error", "caption": "Authentication failed" }
     ]    

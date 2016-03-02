@@ -55,7 +55,8 @@
             $this->RegisterHook("/hook/fitbit", $sid);           
             if ( $this->ReadPropertyBoolean("Active") ) 
             { 
-                $this->SetStatus(102); 
+                //$this->SetStatus(102); 
+                $this->Update();
                 IPS_SetScriptTimer($sid, 60 * 15);
             }
             else 
@@ -124,8 +125,8 @@
             $refreshToken = GetValueString($this->GetIDForIdent("RefreshToken")); 
             if ($refreshToken === "")
             {
-                $this->SetStatus(201);
-                if ($_IPS['SENDER'] === "Execute") 
+                $this->SetStatus(201); 
+                if ($_IPS['SENDER'] != "WebHook") 
                 {
                     echo "Not Authorized! Please login with browser (http://Host:Port/hook/fitbit)";
                     return;
