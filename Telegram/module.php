@@ -231,7 +231,7 @@
         /**
          * Create telegram client.
          */
-        public function Telegram_Create_Client($params = []) 
+        private function Telegram_Create_Client($params = []) 
         {
             foreach (glob(__DIR__ . self::TELEGRAM_CLASSPATH . '/*.php') as $class) 
             {
